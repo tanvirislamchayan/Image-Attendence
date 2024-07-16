@@ -6,10 +6,23 @@ window.addEventListener('scroll', () => {
 const bar = document.getElementById('bar');
 const navItem =  document.getElementById('nav-item');
 const cls = document.getElementById('xmark');
+const leftBar = document.getElementById('left-bar');
+const leftInnerMenu = document.getElementById('left-inner-menu');
+const leftCls = document.getElementById('left-xmark');
+const addBtn = document.getElementById('add-btn');
+const addSection = document.getElementById('add-section');
+const cancelBtn = document.getElementById('cancel-btn');
+
 
 if (bar) {
     bar.addEventListener('click', () => {
         navItem.classList.add('show');
+        if (leftInnerMenu) {
+            leftInnerMenu.classList.remove('show-left');
+        }
+        if (addSection) {
+            addSection.classList.remove('add-section-show');
+        }
     })
 }
 
@@ -19,19 +32,42 @@ if (cls) {
     })
 }
 
-const leftBar = document.getElementById('left-bar');
-const leftInnerMenu = document.getElementById('left-inner-menu');
-const leftCls = document.getElementById('left-xmark');
-
 if (leftBar) {
     leftBar.addEventListener('click', () => {
         leftInnerMenu.classList.add('show-left');
+        if(navItem){
+            navItem.classList.remove('show')
+        }
+        if (addSection) {
+            addSection.classList.remove('add-section-show');
+        }
     });
 }
 
 if (leftCls) {
     leftCls.addEventListener('click', () => {
         leftInnerMenu.classList.remove('show-left');
+    });
+}
+
+
+if (addBtn) {
+    addBtn.addEventListener('click', ()=> {
+        addSection.classList.add('add-section-show');
+        if(navItem){
+            navItem.classList.remove('show')
+        }
+        if (leftInnerMenu) {
+            leftInnerMenu.classList.remove('show-left');
+        }
+    });
+    
+    
+}
+
+if (cancelBtn) {
+    cancelBtn.addEventListener('click', ()=> {
+        addSection.classList.remove('add-section-show');
     });
 }
 
@@ -54,21 +90,7 @@ document.querySelectorAll('.date-field').forEach(function(field) {
 //     return dates;
 // }
 
-var addBtn = document.getElementById('add-btn');
-var addSection = document.getElementById('add-section');
-var cancelBtn = document.getElementById('cancel-btn');
 
-if (addBtn) {
-    addBtn.addEventListener('click', ()=> {
-        addSection.classList.add('add-section-show');
-    });
-}
-
-if (cancelBtn) {
-    cancelBtn.addEventListener('click', ()=> {
-        addSection.classList.remove('add-section-show');
-    });
-}
 
 // image preview
 
@@ -86,3 +108,4 @@ document.querySelectorAll('.fileInput').forEach(input => {
         }
     });
 });
+

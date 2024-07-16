@@ -1,0 +1,122 @@
+{% extends "base/base.html" %}
+{%load static%}
+{% block start %}
+
+
+    <!-- start of student info -->
+    <section style="padding-top: 80px; min-height: 100vh;" class="container-fluid mx-auto">
+
+        <div class="container mx-auto bg-light border rounded shadow-sm">
+            <!-- Search bar -->
+            <div class="col-lg-12 p-0 row my-4 mx-auto">
+                <div class="col-lg-6 my-3">
+                    <a href="#">
+                        <button id="add-btn">Add User</button>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" name="search" placeholder="Search for Students" aria-label="Search">
+                        <button type="submit" class="search-btn">
+                            <span>Search</span>
+                            <i class="fa-solid fa-magnifying-glass d-none"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+
+            <form action="#">
+                <table class="table">
+
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Roll</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Remarks</th>
+                      </tr>
+                    </thead>
+    
+                    <tbody>
+    
+                      <tr>
+                        <th scope="row">1</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>609554</td>
+                        <td>Tanvir Islam</td>
+                        <td></td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">2</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="2" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>189296</td>
+                        <td>Muslima Jahan Mohona</td>
+                        <td></td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">3</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="present" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>690505</td>
+                        <td>Asma Aktar</td>
+                        <td></td>
+                      </tr>
+    
+                    </tbody>
+
+                </table>
+
+                <div class="col-lg-12 text-center my-5 p-2">
+                    <button type="submit">Present</button>
+                    <!-- <button type="button" class="btn btn-outline-success">Present</button> -->
+                </div>
+            </form>
+
+        </div>
+    </section>
+    <!-- End of student info -->
+
+
+
+
+    <!-- Add section -->
+     <section id="add-section" class="border rounded shadow">
+        <h2 class="text-center my-2">Add Students Excel Sheet</h2>
+        <form class="py-3" action="#">
+            <div class="col-lg-6 my-1 mx-auto">
+                <input type="file">
+            </div>
+            <div class="col-lg-6 my-1 mx-auto text-end">
+                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>            
+     </section>
+     <!-- End of Add Section -->
+
+{% endblock %}

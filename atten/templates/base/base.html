@@ -40,8 +40,8 @@
                         <a href="{% url 'subjects' %}">Subject</a>
                     </div>
 
-                    <div class="d-flex align-items-center">
-                        <a href="#">Routine</a>
+                    <div class="d-flex align-items-center {% if '/users/' in request.path %} div-active {%endif%}">
+                        <a href="{% url 'users' %}">Users</a>
                     </div>
 
 
