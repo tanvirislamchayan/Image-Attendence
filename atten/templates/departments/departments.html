@@ -1,0 +1,189 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block start %}
+
+
+
+
+
+
+    <!-- Add section -->
+
+    <section style="margin-top: 80px;" class="container p-3">
+        <div class="col-lg-12 text-start my-3">
+            <a href="#">
+                <button id="add-btn">Add Department</button>
+            </a>
+        </div>
+    </section>
+
+
+
+    <section id="add-section" class="border rounded shadow">
+        <h2 class="text-center my-2">Enter Department Info.</h2>
+        <form class="py-3" action="#">
+            <!-- input form -->
+            <div class="col-md-6 row mx-auto my-3">
+
+                <div class="col-lg-12 my-2">
+                    <label for="department_name" class="form-label">Name Of Department</label>
+                    <input type="text" class="form-control" name="department_name" id="department_name">
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="short_name" class="form-label">Short Name of Department</label>
+                    <input type="text" class="form-control" name="short_name" id="short_name">
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="department_code" class="form-label">Code of Department</label>
+                    <input type="text" class="form-control" name="department_code" id="department_code">
+                </div>
+
+            </div>
+
+            <!-- Button -->
+            <div class="col-lg-6 my-1 mx-auto p-2 text-end">
+                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>            
+    </section>
+    <!-- End of Add Section -->
+
+
+
+    <!-- Start of Departmets -->
+
+
+
+    <section class="departments container mx-auto d-flex flex-wrap justify-content-center my-3">
+        <div class="col-lg-4 p-3">
+            <div class="col-lg-12 mx-auto p-2 rounded bg-light border">
+                <form action="#" method="POST">
+                    <div class="col-lg-12 d-flex flex-column justify-content-center department_img">
+                        <img class="preview mx-auto rounded" src="../static/img/clg-img.jpg" alt="">
+                        <div class="row mx-auto">
+                            <section class="col-lg-8 p-2">
+                                <input type="file" class="fileInput" id="upladImg" accept="image/*">
+                            </section>
+                            <section class="col-lg-4 p-2">
+                                <button type="submit">Save</button>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 my-3">
+                        <p>
+                            Computer Science &amp; Technology (CST) <br>
+                            Technology Code: 85
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4 p-3">
+            <div class="col-lg-12 mx-auto p-2 rounded bg-light border">
+                <form action="#" method="POST">
+                    <div class="col-lg-12 d-flex flex-column justify-content-center department_img">
+                        <img class="preview mx-auto rounded" src="../static/img/clg-img.jpg" alt="">
+                        <div class="row mx-auto">
+                            <section class="col-lg-8 p-2">
+                                <input type="file" class="fileInput" accept="image/*">
+                            </section>
+                            <section class="col-lg-4 p-2">
+                                <button type="submit">Save</button>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 my-3">
+                        <p>
+                            Computer Science &amp; Technology (CST) <br>
+                            Technology Code: 85
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4 p-3">
+            <div class="col-lg-12 mx-auto p-2 rounded bg-light border">
+                <form action="#" method="POST">
+                    <div class="col-lg-12 d-flex flex-column justify-content-center department_img">
+                        <img class="preview mx-auto rounded" src="../static/img/clg-img.jpg" alt="">
+                        <div class="row mx-auto">
+                            <section class="col-lg-8 p-2">
+                                <input type="file" class="fileInput" accept="image/*">
+                            </section>
+                            <section class="col-lg-4 p-2">
+                                <button type="submit">Save</button>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 my-3">
+                        <p>
+                            Computer Science &amp; Technology (CST) <br>
+                            Technology Code: 85
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4 p-3">
+            <div class="col-lg-12 mx-auto p-2 rounded bg-light border">
+                <form action="#" method="POST">
+                    <div class="col-lg-12 d-flex flex-column justify-content-center department_img">
+                        <img class="preview mx-auto rounded" src="../static/img/clg-img.jpg" alt="">
+                        <div class="row mx-auto">
+                            <section class="col-lg-8 p-2">
+                                <input type="file" class="fileInput" accept="image/*">
+                            </section>
+                            <section class="col-lg-4 p-2">
+                                <button type="submit">Save</button>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 my-3">
+                        <p>
+                            Computer Science &amp; Technology (CST) <br>
+                            Technology Code: 85
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4 p-3">
+            <div class="col-lg-12 mx-auto p-2 rounded bg-light border">
+                <form action="#" method="POST">
+                    <div class="col-lg-12 d-flex flex-column justify-content-center department_img">
+                        <img class="preview mx-auto rounded" src="../static/img/clg-img.jpg" alt="">
+                        <div class="row mx-auto">
+                            <section class="col-lg-8 p-2">
+                                <input type="file" class="fileInput" accept="image/*">
+                            </section>
+                            <section class="col-lg-4 p-2">
+                                <button type="submit">Save</button>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 my-3">
+                        <p>
+                            Computer Science &amp; Technology (CST) <br>
+                            Technology Code: 85
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+        
+      
+    </section>
+    
+    <!-- End of departments -->
+
+
+    {% endblock %}

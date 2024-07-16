@@ -1,0 +1,219 @@
+{% extends "base/base.html" %}
+{%load static%}
+{% block start %}
+
+
+    <!-- start of student info -->
+    <section style="padding-top: 80px;" class="container-fluid row mx-auto">
+
+        <div class="col-lg-3 position-relative mx-auto left-menu-section">
+            <i  id="left-bar" class="fa-solid fa-bars d-none"></i>
+            <div id="left-inner-menu" class="position-sticky  border rounded shadow-sm bg-light p-2 inner-menu " style="left: 0; right: 0; top: 80px;">
+                <i id="left-xmark" class="fa-solid fa-xmark d-none"></i>
+                <form action="#">
+                    <div class="col-lg-12 my-3 row mx-auto date-fun">
+                        <div class="col-lg-6">
+                            <label for="fromdate">From Date</label>
+                            <input class="form-control" type="date" name="fromdate" formtarget="dd-mm-yyyy" id="from-date">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="todate">To Date</label>
+                            <input class="form-control" type="date" name="todate" id="to-date">
+                        </div>
+                        <div class="col-lg-12 mt-4 text-end">
+                            <button type="submit"> Add Dates </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="col-lg-12 mb-3 border rounded p-2 date-fun">
+                    <h3>Available Dates</h3>
+                    <div class="date-field" data-date="2024-07-01">July 1, 2024</div>
+                    <div class="date-field" data-date="2024-07-02">July 2, 2024</div>
+                    <div class="date-field" data-date="2024-07-03">July 3, 2024</div>
+                    <div class="date-field" data-date="2024-07-03">July 3, 2024</div>
+                </div>
+
+                <form action="#" method="post">
+            
+                    <div class="col-lg-12 mb-3">
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date" class="form-control" placeholder="Enter date">
+                    </div>
+
+                    <div class="col-lg-12 mb-3">
+                        <label class="mb-1" for="collage_name">Select Collage</label>
+                        <select class="form-select" name="collage_name" aria-label="Select Collage">
+                            <option selected>Open this select menu</option>
+                            <option value="Image Polytechnic Institute">Image Polytechnic Institute</option>
+                            <option value="Smart Leaving Narsing Collage">Smart Leaving Narsing Collage</option>
+                            <option value="Green Peace Narsing Collage">Green Peace Narsing Collage</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-lg-12 mb-3">
+                        <label class="mb-1" for="department">Select Department</label>
+                        <select class="form-select" name="department" aria-label="Select Department">
+                            <option selected>Open this select menu</option>
+                            <option value="CST">CST</option>
+                            <option value="CT">CT</option>
+                            <option value="MT">MT</option>
+                            <option value="ET">ET</option>
+                            <option value="TT">TT</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-lg-12 mb-3">
+                        <label class="mb-1" for="semester">Select Semester</label>
+                        <select class="form-select" name="semester" aria-label="Select Semester">
+                            <option selected>Open this select menu</option>
+                            <option value="1st">1st</option>
+                            <option value="2nd">2nd</option>
+                            <option value="3rd">3rd</option>
+                            <option value="4th">4th</option>
+                            <option value="5th">5th</option>
+                            <option value="6th">6th</option>
+                            <option value="7th">7th</option>
+                            <option value="8th">8th</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-12 mb-3">
+                        <label class="mb-1" for="subject">Select Subject</label>
+                        <select class="form-select" name="subject" aria-label="Select Subject">
+                            <option selected>Open this select menu</option>
+                            <option value="PM">PM</option>
+                            <option value="IM">IM</option>
+                            <option value="SSS">SSS</option>
+                            <option value="MBDP">MBDP</option>
+                            <option value="DBM">DBM</option>
+                            <option value="WD">WD</option>
+                            <option value="PW2">PW2</option>
+                            <option value="SIOTD">SIOTD</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-12 mb-3 p-2 text-end">
+                        <button type="submit">Filter</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-9 bg-light border rounded shadow-sm">
+            <!-- Search bar -->
+            <div class="col-lg-12n p-0 row my-4 mx-auto">
+                <div class="col-lg-6 my-3">
+                    <a href="#">
+                        <button id="add-btn">Add Student</button>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" name="search" placeholder="Search for Students" aria-label="Search">
+                        <button type="submit" class="search-btn">
+                            <span>Search</span>
+                            <i class="fa-solid fa-magnifying-glass d-none"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+
+            <form action="#">
+                <table class="table">
+
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Roll</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Remarks</th>
+                      </tr>
+                    </thead>
+    
+                    <tbody>
+    
+                      <tr>
+                        <th scope="row">1</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>609554</td>
+                        <td>Tanvir Islam</td>
+                        <td></td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">2</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="2" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>189296</td>
+                        <td>Muslima Jahan Mohona</td>
+                        <td></td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">3</th>
+    
+                        <td>
+                            <div class="form-check">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="present" id="present" name="present">
+                              </div>
+                        </td>
+    
+                        <td>690505</td>
+                        <td>Asma Aktar</td>
+                        <td></td>
+                      </tr>
+    
+                    </tbody>
+
+                </table>
+
+                <div class="col-lg-12 text-center my-5 p-2">
+                    <button type="submit">Present</button>
+                    <!-- <button type="button" class="btn btn-outline-success">Present</button> -->
+                </div>
+            </form>
+
+        </div>
+    </section>
+    <!-- End of student info -->
+
+
+
+
+    <!-- Add section -->
+     <section id="add-section" class="border rounded shadow">
+        <h2 class="text-center my-2">Add Students Excel Sheet</h2>
+        <form class="py-3" action="#">
+            <div class="col-lg-6 my-1 mx-auto">
+                <input type="file">
+            </div>
+            <div class="col-lg-6 my-1 mx-auto text-end">
+                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>            
+     </section>
+     <!-- End of Add Section -->
+
+{% endblock %}
