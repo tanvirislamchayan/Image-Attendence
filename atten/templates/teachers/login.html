@@ -8,15 +8,16 @@
     </section>
     <section style="height: 100vh;" class="container-fluid d-flex justify-content-center align-items-center">
         <div class="col-lg-3 p-3 bg-white rounded border shadow" data-aos="zoom-in" data-aos-delay="100">
-            <form>
+            <form method="post">
+              {% include "base/messages.html" %}
+              {% csrf_token %}
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="email" class="form-control" id="username" aria-describedby="emailHelp">
-                  <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                  <label for="username" class="form-label">Username or Email</label>
+                  <input type="text" class="form-control" id="username" name="username" required aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
-                  <label for="passwork" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="passwork">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" name="password" required id="password">
                 </div>
 
                 <div class="col-lg-12 text-end mt-3">

@@ -27,10 +27,14 @@
                     <div class="d-flex align-items-center {% if '/teachers/' in request.path %} div-active {% endif %}">
                         <a href="{% url 'teachers' %}">Teachers Info</a>
                     </div>
+
+                    {% if request.user.is_authenticated %}
         
                     <div class="d-flex align-items-center {% if '/students/' in request.path %} div-active {% endif %} ">
                         <a href="{% url 'students' %}">Students Info</a>
                     </div>
+
+                    {% endif %}
         
                     <div class="d-flex align-items-center {% if '/departments/' in request.path %} div-active {%endif%}">
                         <a href="{% url 'departments' %}">Departments</a>
@@ -40,13 +44,16 @@
                         <a href="{% url 'subjects' %}">Subject</a>
                     </div>
 
-                    <div class="xtra d-flex align-items-center d-none {% if '/login/' in request.path %} div-active {%endif%}">
-                        <a href="{% url 'login' %}">Login|Signup</a>
-                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="xtra d-flex align-items-center d-none">
+                            <a href="{% url 'logout_user' %}">Logout</a>
+                        </div>
+                    {% else %}
 
-                    <div class="xtra d-flex align-items-center d-none">
-                        <a href="#">Logout</a>
-                    </div>
+                        <div class="xtra d-flex align-items-center d-none {% if 'teachers/login/' in request.path %} div-active {%endif%}">
+                            <a href="{% url 'login' %}">Login|Signup</a>
+                        </div>
+                    {% endif %}
 
                     <div class="xtra d-flex align-items-center" id="close" >
                         <a href="#"><i id="xmark" class="fa-solid fa-xmark"></i></a>
@@ -55,15 +62,15 @@
                 </div>
 
                 <div class="nav-item d-flex justify-content-end">
-
-                    <div class="xtra d-flex align-items-center {% if '/login/' in request.path %} div-active {%endif%}">
-                        <a href="{% url 'login' %}">Login|Signup</a>
-                    </div>
-
-                    <div class="d-flex align-items-center">
-                        <a href="#">Logout</a>
-                    </div>
-
+                    {% if not request.user.is_authenticated %}
+                        <div class="xtra d-flex align-items-center {% if '/login/' in request.path %} div-active {% endif %}">
+                            <a href="{% url 'login' %}">Login|Signup</a>
+                        </div>
+                    {% else %}
+                        <div class="xtra d-flex align-items-center">
+                            <a href="{% url 'logout_user' %}">Logout</a>
+                        </div>
+                    {% endif %}
                 </div>
         
                 <div class="nav-menu ml-auto mx-end d-flex justify-content-end">

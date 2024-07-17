@@ -8,5 +8,7 @@ urlpatterns = [
     path('add-user/', views.add_user, name='add_user'),
     path('teacher-details/<str:uid>/', views.teacher_detail,  name='teachers_detail'),
     path('upload-profile-image', views.upload_profile, name='upload_profile'),
-    path('upload-routine', views.upload_routine, name='upload_routine')
+    path('upload-routine', views.upload_routine, name='upload_routine'),
+    path('logout-user', views.logout_user, name='logout_user')
+    # path('user-login/', views.login_user, name='user_login')
 ]

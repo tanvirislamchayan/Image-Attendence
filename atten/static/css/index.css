@@ -389,17 +389,17 @@ button:hover {
 
 .department_img::after {
     content: '';
-    background: linear-gradient(to bottom, #0328f7, #000000);
+    background: linear-gradient(to bottom, #ff0000, #008000);
     opacity: .5;
-    /* backdrop-filter: blur(30px); */
+    backdrop-filter: blur(30px);
     filter: blur(20px);
     border-radius: 10px;
     z-index: 2;
     position: absolute;
-    top: 0;
+    top: -10px;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: -10px;
+    right: -10px;
     text-align: center;
     padding: 100px 0px;
     transform: scaleY(0);

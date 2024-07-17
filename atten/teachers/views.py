@@ -3,6 +3,9 @@ from departments.models import Departmets
 from . models import TeacherProfile
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -24,38 +27,35 @@ def add_user(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         password = request.POST.get('password')
-
         department = request.POST.get('department')
         designation = request.POST.get('designation')
         hiest_digree = request.POST.get('hiest_digree')
         versity = request.POST.get('versity')
 
-
-
-        get_user_obj = User.objects.filter(username = email)
-        if get_user_obj.exists():
+        if User.objects.filter(username=email).exists():
             messages.warning(request, "User already exists!")
             return redirect('teachers')
-        
-        
-        if not get_user_obj:
-            user_obj = User.objects.create(
-                first_name = first_name,
-                last_name = last_name,
-                email = email,
-                username = email,
-            )
-            user_obj.set_password(password)
-            department_obg = Departmets.objects.get(short_name=department)
-            TeacherProfile.objects.create(
-                teacher = user_obj,
-                department = department_obg,
-                designation = designation,
-                hiest_digree = hiest_digree,
-                versity = versity,
-            )
 
-            
+        user_obj = User.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            username=email,
+        )
+        user_obj.set_password(password)
+        user_obj.save()
+        
+        department_obj = Departmets.objects.get(short_name=department)
+        
+        TeacherProfile.objects.create(
+            teacher=user_obj,
+            department=department_obj,
+            designation=designation,
+            hiest_digree=hiest_digree,
+            versity=versity,
+        )
+
+        messages.success(request, "User added successfully!")
     return redirect('teachers')
 
 
@@ -103,4 +103,48 @@ def upload_routine(request):
 
 # Login
 def user_login(request):
-    return render(request, 'teachers/login.html')
+    if request.method == 'POST':
+        email = request.POST.get('username')
+        password = request.POST.get('password') 
+
+        #Get user
+        user_obj = User.objects.filter(username=email)
+
+        #check user if not exists
+        if not user_obj.exists():
+            messages.warning(request, f'Invalid Username')
+        
+        #if user exists 
+        elif user_obj.exists():
+            #check if account is not varified 
+            
+            #if account is varified
+                #check if user authenticated (password)
+            user_auth = authenticate(username=email, password=password)
+            #if true
+            if user_auth is not None:
+                login(request, user_auth)
+                return redirect(reverse('home'))
+
+            #if False
+            else:
+                messages.warning(request, f'Invalid Password')
+                return HttpResponseRedirect(request.path_info)
+        
+    page = 'Login | Django'
+    context = {
+        'page': page
+    }
+    return render(request, 'teachers/login.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
+
+
+# def login_user(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#     return redirect('login')

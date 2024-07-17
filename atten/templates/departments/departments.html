@@ -84,7 +84,8 @@
                         {% if request.user.is_authenticated %}
                         <div class="row mx-auto">
                             <section class="col-lg-8 p-2">
-                                <input type="file" class="fileInput" id="upladImg" name="department_image" accept="image/*">
+                                <label for="upladImg" class="btn btn-primary">Upload</label>
+                                <input type="file" class="fileInput d-none" id="upladImg" name="department_image" accept="image/*">
                                 <input type="text" value="{{ department.uid }}" name="department_uid" style="display: none;">
                             </section>
                             <section class="col-lg-4 p-2">

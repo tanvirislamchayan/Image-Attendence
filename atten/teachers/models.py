@@ -10,7 +10,7 @@ class TeacherProfile(BaseModel):
     teacher = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacherProfile')
     is_active = models.BooleanField(default=True)
     designation = models.CharField(max_length=100, null=True, blank=True)
-    department = models.ForeignKey(Departmets, on_delete=models.RESTRICT, related_name='teacherDepartment')
+    department = models.ForeignKey(Departmets, on_delete=models.RESTRICT, related_name='teacherDepartment', null=True, blank=True)
     teacher_image = models.ImageField(upload_to='teachers', null=True, blank=True)
     hiest_digree = models.CharField(max_length=100, null=True, blank=True)
     versity = models.CharField(max_length=100, null=True, blank=True)
