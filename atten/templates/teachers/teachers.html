@@ -4,119 +4,136 @@
 
 
 
+    <!-- Add section -->
+
+    
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+        <section style="margin-top: 80px;" class="container p-3">
+            <div class="col-lg-12 text-start my-3">
+                <a href="#">
+                    <button id="add-btn">Add User</button>
+                </a>
+            </div>
+        </section>
+
+    {% else %}
+
+    <section style="margin-top: 80px;"></section>
+
+    {% endif %}
+
+
+    <section id="add-section" class="border rounded shadow">
+        <h2 class="text-center my-2">Enter Teacher's Info.</h2>
+        <form class="py-3" action="{% url 'add_user' %}" method="post"> 
+
+            {% csrf_token %}
+            <!-- input form -->
+            <div class="col-md-6 row mx-auto my-3">
+
+                <div class="col-lg-6 my-2">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" name="first_name" required id="first_name">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="last_name" class="form-label">last Name</label>
+                    <input type="text" class="form-control" name="last_name" id="last_name">
+                </div>
+
+                <h3 class="mb-2">Qualification</h3>
+
+                <div class="col-lg-6 my-2">
+                    <label for="hiest_digree" class="form-label">Hiest Digree</label>
+                    <input type="text" class="form-control" name="hiest_digree" id="hiest_digree">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="versity" class="form-label">Collage/Versity</label>
+                    <input type="text" class="form-control" name="versity" id="versity">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="department" class="form-label">Department</label>
+                    <select name="department" id="department" class="form-select form-select">
+                        <option value="">Select Department</option>
+                        {% for department in departments %}
+                        <option value="{{department.short_name}}"> {{department.code}} - {{department.name}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="designation" class="form-label">Designation</label>
+                    <input type="text" class="form-control" name="designation"  id="designation">
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required id="emial">
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required id="password">
+                </div>
+
+
+            </div>
+
+            <!-- Button -->
+            <div class="col-lg-6 my-1 mx-auto p-2 text-end">
+                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>            
+    </section>
+    <!-- End of Add Section -->
+
     <!-- Start of Teachers info -->
-    <section style="padding:80px 0px;" class="container mx-auto d-flex flex-wrap justify-content-between">
 
-      <div class="col-lg-6 p-3 row mx-auto ">
-          <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
-              <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
-                  <!-- <img src="../static/img/images.jpeg" class="passport-img " alt=""> -->
-              </div>
+    {% include "base/messages.html" %}
+    <section style="min-height: 100vh;" class="container-fluid">
 
-              <div class="col-lg-8">
-                  <div class="col-lg-11 mt-2 ">
-                      <h3><a href="teachersdetail.html"> Engr. Manik Ullah  </a> </h3>
-                  </div>
-                  <hr>
-                  <p style="text-transform: capitalize; font-weight: 900;">
-                      Chief Instructor <br>
-                      Department of Computer <br>
-                      Image Polytechnic Institute, Rangpur
-                  </p>
-                  <hr>
-                  <span >BSc. in CSE (PUST)</span>
-              </div>
-          </div>
-      </div>
+        <section class="container mx-auto d-flex flex-wrap justify-content-between">
 
-      <div class="col-lg-6 p-3 row mx-auto ">
-          <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
-              <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
-                  <!-- <img src="../static/img/images.jpeg" class="passport-img " alt=""> -->
-              </div>
+            {% for teacher in teachers %}
 
-              <div class="col-lg-8">
-                  <div class="col-lg-11 mt-2 ">
-                      <h3>Engr. Manik Ullah</h3>
-                  </div>
-                  <hr>
-                  <p style="text-transform: capitalize; font-weight: 900;">
-                      Chief Instructor <br>
-                      Department of Computer <br>
-                      Image Polytechnic Institute, Rangpur
-                  </p>
-                  <hr>
-                  <span >BSc. in CSE (PUST)</span>
-              </div>
-          </div>
-      </div>
+            <div class="col-lg-6 p-3 row mx-auto ">
+                <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
+                    <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
+                        {% if teacher.teacher_image %}
+                        <img src="/media/{{teacher.teacher_image}}" class="passport-img " alt="">
 
-      <div class="col-lg-6 p-3 row mx-auto ">
-          <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
-              <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
-                  <!-- <img src="../static/img/images.jpeg" class="passport-img " alt=""> -->
-              </div>
+                        {% else %}
 
-              <div class="col-lg-8">
-                  <div class="col-lg-11 mt-2 ">
-                      <h3>Engr. Manik Ullah</h3>
-                  </div>
-                  <hr>
-                  <p style="text-transform: capitalize; font-weight: 900;">
-                      Chief Instructor <br>
-                      Department of Computer <br>
-                      Image Polytechnic Institute, Rangpur
-                  </p>
-                  <hr>
-                  <span >BSc. in CSE (PUST)</span>
-              </div>
-          </div>
-      </div>
+                        <img src="{% static 'img/no_img.jpeg' %}" class="passport-img " alt="">
 
-      <div class="col-lg-6 p-3 row mx-auto ">
-          <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
-              <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
-                  <!-- <img src="../static/img/images.jpeg" class="passport-img " alt=""> -->
-              </div>
+                        {% endif %}
+                    </div>
+      
+                    <div class="col-lg-8">
+                        <div class="col-lg-11 mt-2 ">
+                            <h3><a href="{% url 'teachers_detail' teacher.uid %}"> {{teacher.teacher.first_name}} {{teacher.teacher.last_name}}  </a> </h3>
+                        </div>
+                        <hr>
+                        <p style="text-transform: capitalize; font-weight: 900;">
+                            {{teacher.designation}} - {{teacher.department.short_name}} <br>
+                            Image Polytechnic Institute, Rangpur
+                        </p>
+                        <hr>
+                        <span >{{ teacher.hiest_digree }} ({{ teacher.versity }})</span>
+                    </div>
+                </div>
+            </div>
 
-              <div class="col-lg-8">
-                  <div class="col-lg-11 mt-2 ">
-                      <h3>Engr. Manik Ullah</h3>
-                  </div>
-                  <hr>
-                  <p style="text-transform: capitalize; font-weight: 900;">
-                      Chief Instructor <br>
-                      Department of Computer <br>
-                      Image Polytechnic Institute, Rangpur
-                  </p>
-                  <hr>
-                  <span >BSc. in CSE (PUST)</span>
-              </div>
-          </div>
-      </div>
+            {% endfor %}
+      
+          </section> 
 
-      <div class="col-lg-6 p-3 row mx-auto ">
-          <div class="col-lg-12 rounded row py-2 bg-light mx-auto shadow-sm">
-              <div style="height: 30vh;" class="col-lg-4  d-flex justify-content-center align-items-center">
-                  <!-- <img src="../static/img/images.jpeg" class="passport-img " alt=""> -->
-              </div>
+    </section>
 
-              <div class="col-lg-8">
-                  <div class="col-lg-11 mt-2 ">
-                      <h3>Engr. Manik Ullah</h3>
-                  </div>
-                  <hr>
-                  <p style="text-transform: capitalize; font-weight: 900;">
-                      Chief Instructor <br>
-                      Department of Computer <br>
-                      Image Polytechnic Institute, Rangpur
-                  </p>
-                  <hr>
-                  <span >BSc. in CSE (PUST)</span>
-              </div>
-          </div>
-      </div>
-    </section> 
+
     <!-- End fo Teacher Info -->
 
 

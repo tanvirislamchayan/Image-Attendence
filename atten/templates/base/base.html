@@ -10,7 +10,7 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
 
-    <title>Documents</title>
+    <title> {{page}} </title>
 </head>
 <body>
 
@@ -39,11 +39,6 @@
                     <div class="d-flex align-items-center {% if '/subjects/' in request.path %} div-active {%endif%}">
                         <a href="{% url 'subjects' %}">Subject</a>
                     </div>
-
-                    <div class="d-flex align-items-center {% if '/users/' in request.path %} div-active {%endif%}">
-                        <a href="{% url 'users' %}">Users</a>
-                    </div>
-
 
                     <div class="xtra d-flex align-items-center d-none {% if '/login/' in request.path %} div-active {%endif%}">
                         <a href="{% url 'login' %}">Login|Signup</a>

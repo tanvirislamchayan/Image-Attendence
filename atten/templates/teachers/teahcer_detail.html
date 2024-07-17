@@ -1,0 +1,106 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block start %}
+
+<!-- <section style="min-height: 100vh;" class="container-fluid"> -->
+
+
+    <!-- Start of Teachers Details -->
+    <section style="margin-top: 80px; min-height: 100vh;" class="container">
+
+        <div class="col-lg-12 row mx-auto ">
+            <div class="col-lg-12 rounded row py-2 bg-light border mx-auto shadow-sm">
+
+                <div style="height: 30vh;" class="col-lg-3 profileImageDiv d-flex justify-content-start align-items-center position-relative">
+                    {% if teacher.teacher_image %}
+                    <img src="/media/{{teacher.teacher_image}}" class="passport-img" id="profilePreview" alt="">
+                    {% else %}
+                    <img src="{% static 'img/no_img.jpeg' %}" class="passport-img" id="profilePreview" alt="">
+                    {% endif %}
+                
+                    {% if request.user.is_authenticated%}
+                    <div class="uploadProfileDiv position-absolute">
+                        <form action="{% url 'upload_profile' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div>
+                                <label for="profileImageInput" class="btn btn-primary m-2">Upload Image</label>
+                                <input type="file" id="profileImageInput" name="profileImage" accept="image/*" onchange="showImagePreview(event)" class="d-none">
+                                <input type="text" value="{{ teacher.uid }}" name="uid" class="d-none">
+                            </div>
+                            <button class="btn btn-primary m-2" type="submit">Save</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="col-lg-11 mt-2 ">
+                        <h3>
+                            {{ teacher.teacher.first_name }} {{ teacher.teacher.last_name }}
+                        </h3>
+                    </div>
+                    <hr>
+                    <p style="text-transform: capitalize; font-weight: 900;">
+                        {{ teacher.designation }} - {{ teacher.department.short_name }} <br>
+                        Image Polytechnic Institute, Rangpur
+                    </p>
+                    <hr>
+                    <span > {{teacher.hiest_digree}} ({{ teacher.versity }}) </span>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mt-3 p-2 bg-light shadow-sm border rounded-top">
+                <h1 class="text-center my-2">Routine</h1>
+
+                <div style="max-height: 70vh;" class="col-lg-12 mx-auto d-flex justify-content-center">
+                    {% if teacher.routine_img %}
+                    <img src="/media/{{teacher.routine_img}}" style="max-height: 100%; width: auto;" alt="">
+                    {% else %}
+                    <img src="" id="routine_img_preview" style="max-height: 100%; width: auto;"  alt="">
+                    {% endif %}
+                </div>
+                
+                {% if request.user.is_authenticated%}
+                <div class="col-lg-12 row mx-auto p-2">
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+                        <form action="{% url 'upload_routine' %}" method="post" class="d-flex justify-content-end" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div>
+                                <label for="routine_img" class="btn btn-primary m-2">Upload Image</label>
+                                <input type="file" id="routine_img" name="routine_img" accept="image/*" onchange="showRoutineImagePreview(event)" class="d-none">
+                                <input type="text" value="{{ teacher.uid }}" name="uid" class="d-none">
+                            </div>
+                            <button class="btn btn-primary m-2" type="submit">Save</button>
+                        </form>
+                    </div>
+                    
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+    <!-- End fo Teacher Details -->
+
+<!-- </section> -->
+<script>
+
+function showImagePreview(event) {
+    const [file] = event.target.files;
+    if (file) {
+        const preview = document.getElementById('profilePreview');
+        preview.src = URL.createObjectURL(file);
+    }
+}
+
+function showRoutineImagePreview(event){
+    const [file] = event.target.files;
+    if (file) {
+        const preview = document.getElementById('routine_img_preview');
+        preview.src = URL.createObjectURL(file);
+    }
+}
+</script>
+{% endblock %}

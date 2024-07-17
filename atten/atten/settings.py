@@ -45,7 +45,7 @@ EXTRANAL_APPS = [
     'home',
     'students',
     'subjects',
-    'userAccount',
+    'teachers',
 ] 
 
 INSTALLED_APPS += EXTRANAL_APPS
