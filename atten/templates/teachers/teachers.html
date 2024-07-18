@@ -56,9 +56,9 @@
                 <div class="col-lg-6 my-2">
                     <label for="department" class="form-label">Department</label>
                     <select name="department" id="department" class="form-select form-select">
-                        <option value="">Select Department</option>
+                        <option ></option>
                         {% for department in departments %}
-                        <option value="{{department.short_name}}"> {{department.code}} - {{department.name}} </option>
+                        <option value="{{department.name}}"> {{department.name}} </option>
                         {% endfor %}
                     </select>
                 </div>
@@ -118,7 +118,8 @@
                         </div>
                         <hr>
                         <p style="text-transform: capitalize; font-weight: 900;">
-                            {{teacher.designation}} - {{teacher.department.short_name}} <br>
+                            {{teacher.designation}} <br>
+                            {{teacher.department.name}} <br>
                             Image Polytechnic Institute, Rangpur
                         </p>
                         <hr>

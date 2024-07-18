@@ -45,7 +45,7 @@ def add_user(request):
         user_obj.set_password(password)
         user_obj.save()
         
-        department_obj = Departmets.objects.get(short_name=department)
+        department_obj = Departmets.objects.get(name=department)
         
         TeacherProfile.objects.create(
             teacher=user_obj,

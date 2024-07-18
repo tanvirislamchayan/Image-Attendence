@@ -376,20 +376,18 @@ button:hover {
 
 .department_img div{
     position: absolute;
-    bottom: 10px;
-    /* left: 10px; */
+    bottom: -150px;
     z-index: 100;
-    transform: translateY(100px);
     transition: .3s;
 }
 
 .department_img:hover div {
-    transform: translateX(0px);
+    bottom: 10px;
 }
 
 .department_img::after {
     content: '';
-    background: linear-gradient(to bottom, #ff0000, #008000);
+    background: linear-gradient(to bottom, #011755a6, #000);
     opacity: .5;
     backdrop-filter: blur(30px);
     filter: blur(20px);
@@ -416,6 +414,12 @@ button:hover {
 
 
 /* Teacher details */
+
+.profileImageDiv {
+    position: relative;
+    overflow: hidden;
+}
+
 .uploadProfileDiv {
     position: absolute;
     top: 0;
@@ -424,19 +428,19 @@ button:hover {
     right: 0;
     padding: 20px;
     overflow: hidden;
-    background-color: #0005;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    backdrop-filter: blur(3px);
-    transform: scaleX(0);
+    backdrop-filter: blur(10px);
+    transform: translateX(-400px);
     transform-origin: left;
-    transition: .3s;
+    transition: .5s;
+    background-color: #fff5;
 }
 
 .profileImageDiv:hover .uploadProfileDiv {
-    transform: scaleX(1);
+    transform: translateX(0px);
     transform-origin: left;
 }
 
@@ -522,3 +526,60 @@ footer a {
     text-decoration: underline;
     cursor: pointer;
 }
+
+
+
+/* Table */
+.table__body {
+    overflow: auto;
+    max-height: 70vh;
+}
+
+.table__body::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb {
+    border-radius: .5rem;
+    background-color: #0005;
+    visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+table {
+    width: 100%;
+}
+
+table, th, td {
+    padding: 1rem;
+    border-collapse: collapse;
+}
+
+thead th {
+    top: 0;
+    left: 0;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #0002 !important;
+}
+
+tbody tr:hover{
+    background-color: #0004 !important;
+}
+
+
+@media (max-width:1000px) {
+    td:not(:first-of-type) {
+        min-width: 12rem !important;
+    }
+
+}
+
+.selected {
+    background-color: aqua;
+  }

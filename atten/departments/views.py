@@ -15,17 +15,13 @@ def departments(request):
 def create_dep(request):
     if request.method == 'POST':
         name = request.POST.get('department_name')
-        short_name = request.POST.get('short_name')
-        department_code = request.POST.get('department_code')
 
-        if Departmets.objects.filter(short_name=short_name).exists():
+        if Departmets.objects.filter(name=name).exists():
             messages.warning(request, "Department Already exists!")
             return redirect('departments')
         else:
             Departmets.objects.create(
                 name=name,
-                short_name=short_name,
-                code=department_code
             )
             messages.success(request, "Department created successfully.")
             return redirect('departments')

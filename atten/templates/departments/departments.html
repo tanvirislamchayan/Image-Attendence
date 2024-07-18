@@ -39,16 +39,6 @@
                     <input type="text" class="form-control" name="department_name" required id="department_name">
                 </div>
 
-                <div class="col-lg-6  my-2">
-                    <label for="short_name" class="form-label">Short Name of Department</label>
-                    <input type="text" class="form-control" name="short_name" required id="short_name">
-                </div>
-
-                <div class="col-lg-6  my-2">
-                    <label for="department_code" class="form-label">Code of Department</label>
-                    <input type="text" class="form-control" name="department_code" required id="department_code">
-                </div>
-
             </div>
 
             <!-- Button -->
@@ -82,10 +72,10 @@
                         {% endif %}
                         
                         {% if request.user.is_authenticated %}
-                        <div class="row mx-auto">
+                        <div sty class="row mx-auto">
                             <section class="col-lg-8 p-2">
-                                <label for="upladImg" class="btn btn-primary">Upload</label>
-                                <input type="file" class="fileInput d-none" id="upladImg" name="department_image" accept="image/*">
+                                <label for=" {{ department.uid }} " class="btn btn-primary">Upload</label>
+                                <input type="file" class="fileInput d-none" id=" {{ department.uid }} " name="department_image" accept="image/*">
                                 <input type="text" value="{{ department.uid }}" name="department_uid" style="display: none;">
                             </section>
                             <section class="col-lg-4 p-2">
@@ -96,7 +86,7 @@
                     </div>
                     <div class="col-lg-12 my-3">
                         <p>
-                            <b style="font-size: 22px;">{{ department.code }} - {{ department.name }} ({{ department.short_name }}) </b><br>
+                            <b style="font-size: 22px;">{{ department.name }} </b><br>
                         </p>
                     </div>
                 </form>

@@ -4,13 +4,14 @@
 
 
     <!-- start of student info -->
-    <section style="padding-top: 80px;" class="container-fluid row mx-auto">
+    <section style="padding-top: 80px; min-height: 100vh;" class="container-fluid row mx-auto">
 
         <div class="col-lg-3 position-relative mx-auto left-menu-section">
             <i  id="left-bar" class="fa-solid fa-bars d-none"></i>
             <div id="left-inner-menu" class="position-sticky  border rounded shadow-sm bg-light p-2 inner-menu " style="left: 0; right: 0; top: 80px;">
                 <i id="left-xmark" class="fa-solid fa-xmark d-none"></i>
-                <form action="#">
+                <form action="{% url 'add_dates' %}" method="post">
+                    {% csrf_token %}
                     <div class="col-lg-12 my-3 row mx-auto date-fun">
                         <div class="col-lg-6">
                             <label for="fromdate">From Date</label>
@@ -34,66 +35,47 @@
                     <div class="date-field" data-date="2024-07-03">July 3, 2024</div>
                 </div>
 
-                <form action="#" method="post">
-            
-                    <div class="col-lg-12 mb-3">
-                        <label for="date">Date</label>
-                        <input type="date" name="date" id="date" class="form-control" placeholder="Enter date">
-                    </div>
+                <form method="post" class="col-lg-12 row mx-auto">
+                    {% csrf_token %}
 
                     <div class="col-lg-12 mb-3">
-                        <label class="mb-1" for="collage_name">Select Collage</label>
-                        <select class="form-select" name="collage_name" aria-label="Select Collage">
-                            <option selected>Open this select menu</option>
-                            <option value="Image Polytechnic Institute">Image Polytechnic Institute</option>
-                            <option value="Smart Leaving Narsing Collage">Smart Leaving Narsing Collage</option>
-                            <option value="Green Peace Narsing Collage">Green Peace Narsing Collage</option>
+                        <label class="mb-1" for="department">Department</label>
+                        <select class="form-select" name="department" aria-label="Select Department" >
+                            <option></option>
+                            {% for department in departments %}
+                                <option value="{{ department.name }}" {% if selected_department == department.name %} selected class="selected" {% endif %}>
+                                    {{ department.name }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
 
-                    <div class="col-lg-12 mb-3">
-                        <label class="mb-1" for="department">Select Department</label>
-                        <select class="form-select" name="department" aria-label="Select Department">
-                            <option selected>Open this select menu</option>
-                            <option value="CST">CST</option>
-                            <option value="CT">CT</option>
-                            <option value="MT">MT</option>
-                            <option value="ET">ET</option>
-                            <option value="TT">TT</option>
+                    <div class="col-lg-6 mb-3">
+                        <label class="mb-1" for="semester">Semester</label>
+                        <select class="form-select" name="semester" required aria-label="Select Semester">
+                            <option></option>
+                            {% for semester in semesters %}
+                                <option value="{{semester.name}}" {% if selcted_semester == semester.name %} selected class="selected" {% endif %}>
+                                    {{semester.name}}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
-
-                    <div class="col-lg-12 mb-3">
-                        <label class="mb-1" for="semester">Select Semester</label>
-                        <select class="form-select" name="semester" aria-label="Select Semester">
-                            <option selected>Open this select menu</option>
-                            <option value="1st">1st</option>
-                            <option value="2nd">2nd</option>
-                            <option value="3rd">3rd</option>
-                            <option value="4th">4th</option>
-                            <option value="5th">5th</option>
-                            <option value="6th">6th</option>
-                            <option value="7th">7th</option>
-                            <option value="8th">8th</option>
+                    <div class="col-lg-6 mb-3">
+                        <label class="mb-1" for="shift">Shift</label>
+                        <select class="form-select" name="shift" aria-label="Select Group">
+                            <option></option>
+                            {% for shift in shifts %}
+                                <option value="{{shift.shift}}" {% if selected_shift == shift.shift %} selected class="selected" {% endif %}>
+                                    {{shift.shift}}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
-                    <div class="col-lg-12 mb-3">
-                        <label class="mb-1" for="subject">Select Subject</label>
-                        <select class="form-select" name="subject" aria-label="Select Subject">
-                            <option selected>Open this select menu</option>
-                            <option value="PM">PM</option>
-                            <option value="IM">IM</option>
-                            <option value="SSS">SSS</option>
-                            <option value="MBDP">MBDP</option>
-                            <option value="DBM">DBM</option>
-                            <option value="WD">WD</option>
-                            <option value="PW2">PW2</option>
-                            <option value="SIOTD">SIOTD</option>
-                        </select>
-                    </div>
+                    
 
                     <div class="col-lg-12 mb-3 p-2 text-end">
                         <button type="submit">Filter</button>
@@ -106,12 +88,14 @@
         <div class="col-lg-9 bg-light border rounded shadow-sm">
             <!-- Search bar -->
             <div class="col-lg-12n p-0 row my-4 mx-auto">
-                <div class="col-lg-6 my-3">
+                <div class="col-lg-6 my-2">
+                    {% if request.user.is_authenticated %}
                     <a href="#">
                         <button id="add-btn">Add Student</button>
                     </a>
+                    {% endif %}
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 my-2">
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" name="search" placeholder="Search for Students" aria-label="Search">
                         <button type="submit" class="search-btn">
@@ -122,71 +106,85 @@
                 </div>
             </div>
 
+            
+
             <!-- Students Table -->
 
             <form action="#">
-                <table class="table">
 
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Roll</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Remarks</th>
-                      </tr>
-                    </thead>
-    
-                    <tbody>
-    
-                      <tr>
-                        <th scope="row">1</th>
-    
-                        <td>
-                            <div class="form-check">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="present" name="present">
-                              </div>
-                        </td>
-    
-                        <td>609554</td>
-                        <td>Tanvir Islam</td>
-                        <td></td>
-                      </tr>
+                <div class="col-lg-12n p-0 row my-4 mx-auto">
+                    <!-- <div class="col-lg-6"> -->
+                        <div class="col-lg-4 mb-3">
+                            <label for="date">Date</label>
+                            <input type="date" name="date" id="date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
+                        </div>
+                    <!-- </div> -->
+                    <!-- <div class="col-lg-6 row"> -->
 
-                      <tr>
-                        <th scope="row">2</th>
-    
-                        <td>
-                            <div class="form-check">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2" id="present" name="present">
-                              </div>
-                        </td>
-    
-                        <td>189296</td>
-                        <td>Muslima Jahan Mohona</td>
-                        <td></td>
-                      </tr>
+                        <div class="col-lg-4 mb-3">
+                            <label class="mb-1" for="teacher">Teacher</label>
+                            <select class="form-select" name="teacher" aria-label="Teacher">
+                                <option></option>
+                                {% for teacher in teachers %}
+                                <option value="{{ teacher.teacher.first_name }} {{ teacher.teahcer.last_name }}" {% if selcted_teacher == teacher.teacher.username %} selected class="selected" {% endif %}>
+                                    {{ teacher.teacher.first_name }} {{ teacher.teacher.last_name }}
+                                </option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
 
-                      <tr>
-                        <th scope="row">3</th>
-    
-                        <td>
-                            <div class="form-check">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="present" id="present" name="present">
-                              </div>
-                        </td>
-    
-                        <td>690505</td>
-                        <td>Asma Aktar</td>
-                        <td></td>
-                      </tr>
-    
-                    </tbody>
 
-                </table>
+                        <div class="col-lg-4 mb-3">
+                            <label class="mb-1" for="subject">Select Subject</label>
+                            <select class="form-select" name="subject" required aria-label="Select Subject">
+                                <option></option>
+                                {% for subject in subjects %}
+                                <option value="{{ subject.name }}">
+                                    {{ subject.code }} - {{ subject.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    <!-- </div> -->
+                </div>
+
+                <div class="table__body">
+                    <table class="table">
+
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Roll</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                        </thead>
+        
+                        <tbody>
+
+
+                        {% for student in students %}
+                        <tr>
+                            <th scope="row"> {{ student.sr_no }} </th>
+        
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="present" name="present">
+                                </div>
+                            </td>
+        
+                            <td> {{ student.roll }} </td>
+                            <td> {{ student.name }} </td>
+                            <td>  </td>
+                        </tr>
+                        {% endfor %}
+        
+                        </tbody>
+
+                    </table>
+                </div>
 
                 <div class="col-lg-12 text-center my-5 p-2">
                     <button type="submit">Present</button>
@@ -215,5 +213,14 @@
         </form>            
      </section>
      <!-- End of Add Section -->
+
+     <!-- <script>
+        function get_semester(value){
+            var currentUrl = window.location.pathname;
+            var params = new URLSearchParams(window.location.search);
+            params.set('semester', value);
+            window.location.href = currentUrl + '?' + params.toString();
+        }
+     </script> -->
 
 {% endblock %}
