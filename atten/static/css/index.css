@@ -15,7 +15,7 @@ a {
 }
 
 h1, h2 {
-    font-family: Playfair Display;
+    font-family: sans-serif;
     font-weight: 900;
     letter-spacing: 1px;
 }
@@ -176,8 +176,14 @@ button:hover {
     color: rgb(0, 25, 253);
 }
 
+.nav-item i {
+    margin-left: 5px;
+    transition: .3s;
+}
+
 .nav-item div:hover i {
-    transform: rotateX(180deg);
+    transform: rotate(-180deg);
+    /* transform-origin: left; */
 }
 
 .div-active a {
@@ -197,6 +203,114 @@ button:hover {
     transition: transform 0.3s ease;
     transform-origin: left;
     /* display: none; */
+}
+
+.div-active div {
+    color: rgb(0, 25, 253) !important;
+}
+
+.div-active div::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    top: 110%;
+    height: 3px;
+    background: rgb(0, 25, 253);
+    /* transform: scaleX(0); */
+    transition: transform 0.3s ease;
+    transform-origin: left;
+    /* display: none; */
+}
+
+
+
+.info {
+    position: relative;
+}
+
+.info span {
+    transition: .3s;
+}
+
+.info span::after {
+    content: '';
+    background-color: blue;
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 50%;
+    bottom: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transform: .3s;
+}
+
+.info:hover span::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.info:hover span {
+    color: blue;
+}
+
+.info .info-after .link {
+    /* background-color: red; */
+    color: black;
+}
+
+.info .info-after .link:hover  {
+    color: blue ;
+}
+
+.info .info-after {
+    z-index: 1000;
+    position: absolute;
+    background-color: #6edff6;
+    left: 0;
+    min-width: 250px;
+    top: 100%;
+    transform: scaleY(0);
+    transition: .3s;
+    transform-origin: top;
+    display: flex;
+    flex-direction:column ;
+    justify-content: start !important;
+    color: red;
+    padding-bottom: 20px;
+    padding: 20px 0px !important;
+    margin: 0 !important;
+}
+
+.info-div {
+    /* background-color: red; */
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+.info:hover .info-after {
+    transform: scaleY(1);
+}
+
+.div-active-info {
+    position: relative;
+}
+
+.div-active-info span {
+    color: blue ;
+}
+
+.div-active-info::after {
+    content: '';
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 50%;
+    bottom: 0;
+    background-color: blue;
 }
 
 .nav-menu {

@@ -4,6 +4,7 @@ from departments.models import Departmets
 from subjects.models import Subjects, Semester, Probidhan
 from teachers.models import TeacherProfile
 from .models import StudentShift, Student
+from django.contrib import messages
 
 # Create your views here.
 
@@ -18,6 +19,7 @@ def show_students(request):
         context = {
             'page': 'Unable to Access.'
         }
+        messages.warning(request, f"May be you're not allowd access this page. Please contract with the administrator!")
         return render(request, 'base/not_to_access.html', context=context)
     
     departments = Departmets.objects.all()
@@ -106,7 +108,7 @@ def add_dates(request):
 
 
     context = {}
-    return redirect('students')
+    return redirect('attendence')
 
    
         # current_date = start_date

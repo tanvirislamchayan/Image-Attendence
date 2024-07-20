@@ -30,8 +30,22 @@
 
                     {% if request.user.is_authenticated %}
         
-                    <div class="d-flex align-items-center {% if '/students/' in request.path %} div-active {% endif %} ">
-                        <a href="{% url 'students' %}">Students Info</a>
+                    <div class=" info-div ">
+                        <div style="text-align: left !important;" class="info {% if '/students/' in request.path %} div-active-info {% endif %}">
+                            <span>Students <i class="fa-solid fa-chevron-down"></i> </span>
+                            <div class="info-after">
+                                <div  class="mt-1 {% if '/student-attendence/' in request.path %} div-active {% endif %}">
+                                    <a class="link" href="{% url 'attendence' %}">Attendence</a>
+                                </div>
+                                <div class="mt-1 ">
+                                    <a class="link" href="#">Update Student Info</a>
+                                </div>
+
+                                <!-- <span class="py-1 ">
+                                    <a href="#">Students Info</a>
+                                </span> -->
+                            </div>
+                        </div>
                     </div>
 
                     {% endif %}

@@ -111,28 +111,37 @@ def user_login(request):
 
         #Get user
         user_obj = User.objects.filter(username=email)
+        
 
         #check user if not exists
         if not user_obj.exists():
             messages.warning(request, f'Invalid Username')
+
+        # if user_obj.teacherProfile.is_active == False:
+            
+        #     return HttpResponseRedirect(request.path_info)
         
         #if user exists 
         elif user_obj.exists():
             #check if account is not varified 
+            teacher_profile = TeacherProfile.objects.filter(teacher__username = email, is_active =True)
+            if not teacher_profile:
+                messages.warning(request, f"You're not allowed! Your ID has been deactivated. Please contract with the administrator.")
+                return render(request, 'base/not_to_access.html', {'page':"Not allowed!"})
             
             #check if user authenticated (password)
             user_auth = authenticate(username=email, password=password)
             #if true
             if user_auth is not None:
                 login(request, user_auth)
-                return redirect(reverse('students'))
+                return redirect(reverse('attendence'))
 
             #if False
             else:
                 messages.warning(request, f'Invalid Password')
                 return HttpResponseRedirect(request.path_info)
         
-    page = 'Login | Django'
+    page = 'User Login'
     context = {
         'page': page
     }
