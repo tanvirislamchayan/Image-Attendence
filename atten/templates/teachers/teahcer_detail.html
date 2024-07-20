@@ -17,8 +17,9 @@
                     {% else %}
                     <img src="{% static 'img/no_img.jpeg' %}" class="passport-img" id="profilePreview" alt="">
                     {% endif %}
+
                 
-                    {% if request.user.is_authenticated%}
+                    {% if request.user.is_superuser or teacher.teacher.username == request.user.username %}
                     <div class="uploadProfileDiv position-absolute">
                         <form action="{% url 'upload_profile' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -46,6 +47,19 @@
                     </p>
                     <hr>
                     <span > {{teacher.hiest_digree}} ({{ teacher.versity }}) </span>
+
+                    <div style="" class="col-lg-12 d-flex flex-column mt-3">
+                        {% if teacher.teacher.email %}
+                        <span>
+                            <strong>eMail: <i class="fa-solid fa-mail"></i> </strong> {{ teacher.teacher.email }}
+                        </span>
+                        {% endif %}
+                        {% if teacher.phone %}
+                        <span>
+                            <strong><i class="fa-solid fa-phone"></i> </strong> {{ teacher.phone }}
+                        </span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 

@@ -2,6 +2,13 @@
 {%load static%}
 {% block start %}
 
+ <style>
+    @media (max-width:899px) {
+        .student_name {
+            display: none;
+        }
+    }
+ </style>
 
     <!-- start of student info -->
     <section style="padding-top: 80px; min-height: 100vh;" class="container-fluid row mx-auto">
@@ -39,8 +46,8 @@
                     {% csrf_token %}
 
                     <div class="col-lg-12 mb-3">
-                        <label class="mb-1" for="department">Department</label>
-                        <select class="form-select" name="department" aria-label="Select Department" >
+                        <label class="mb-1" for="department">Department <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="department" id="department" required aria-label="Select Department" >
                             <option></option>
                             {% for department in departments %}
                                 <option value="{{ department.name }}" {% if selected_department == department.name %} selected class="selected" {% endif %}>
@@ -52,7 +59,7 @@
 
 
                     <div class="col-lg-6 mb-3">
-                        <label class="mb-1" for="semester">Semester</label>
+                        <label class="mb-1" for="semester">Semester <span style="color:red;">*</span> </label>
                         <select class="form-select" name="semester" required aria-label="Select Semester">
                             <option></option>
                             {% for semester in semesters %}
@@ -63,18 +70,30 @@
                         </select>
                     </div>
 
+                    
                     <div class="col-lg-6 mb-3">
-                        <label class="mb-1" for="shift">Shift</label>
-                        <select class="form-select" name="shift" aria-label="Select Group">
+                        <label class="mb-1" for="shift">Shift <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="shift" required aria-label="Select Group">
                             <option></option>
                             {% for shift in shifts %}
-                                <option value="{{shift.shift}}" {% if selected_shift == shift.shift %} selected class="selected" {% endif %}>
-                                    {{shift.shift}}
+                            <option value="{{shift.shift}}" {% if selected_shift == shift.shift %} selected class="selected" {% endif %}>
+                                {{shift.shift}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-lg-12 mb-3">
+                        <label class="mb-1" for="probidhan">Probidhan <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="probidhan" required aria-label="Select probidhan">
+                            <option></option>
+                            {% for probidhan in probidhans %}
+                                <option value="{{probidhan.name}}" {% if selected_probidhan == probidhan.name%} selected class="selected" {% endif %}>
+                                    {{probidhan.name}}
                                 </option>
                             {% endfor %}
                         </select>
                     </div>
-
                     
 
                     <div class="col-lg-12 mb-3 p-2 text-end">
@@ -110,12 +129,24 @@
 
             <!-- Students Table -->
 
-            <form action="#">
+            <form action="#" method="post">
+
+                {% csrf_token %}
+                <input type="text" value="{{selected_department}}" name="p_department">
+                <input type="text" value="{{selcted_semester}}" name="p_semester">
+                <input type="text" value="{{selected_probidhan}}" name="p_probidhan">
+                <input type="text" value="{{selected_shift}}" name="p_shift">
+
+                <textarea name="present_list" id="presentList"></textarea>
+
+
+
+
 
                 <div class="col-lg-12n p-0 row my-4 mx-auto">
                     <!-- <div class="col-lg-6"> -->
                         <div class="col-lg-4 mb-3">
-                            <label for="date">Date</label>
+                            <label for="date">Date <span style="color:red;">*</span> </label>
                             <input type="date" name="date" id="date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
                         </div>
                     <!-- </div> -->
@@ -123,10 +154,10 @@
 
                         <div class="col-lg-4 mb-3">
                             <label class="mb-1" for="teacher">Teacher</label>
-                            <select class="form-select" name="teacher" aria-label="Teacher">
+                            <select class="form-select" name="p_teacher" aria-label="Teacher">
                                 <option></option>
                                 {% for teacher in teachers %}
-                                <option value="{{ teacher.teacher.first_name }} {{ teacher.teahcer.last_name }}" {% if selcted_teacher == teacher.teacher.username %} selected class="selected" {% endif %}>
+                                <option value="{{ teacher.teacher.username }}" {% if selected_teacher == teacher.teacher.username %} selected class="selected" {% endif %}>
                                     {{ teacher.teacher.first_name }} {{ teacher.teacher.last_name }}
                                 </option>
                                 {% endfor %}
@@ -136,11 +167,11 @@
 
 
                         <div class="col-lg-4 mb-3">
-                            <label class="mb-1" for="subject">Select Subject</label>
-                            <select class="form-select" name="subject" required aria-label="Select Subject">
+                            <label class="mb-1" for="subject">Subject <span style="color:red;">*</span> </label>
+                            <select class="form-select" name="p_subject" required aria-label="Select Subject" {% if not subjects %} disabled {% endif %}>
                                 <option></option>
                                 {% for subject in subjects %}
-                                <option value="{{ subject.name }}">
+                                <option value="{{ subject.name }}" {% if selected_subject == subject.name %} selected class="selected" {% endif %}>
                                     {{ subject.code }} - {{ subject.name }}
                                 </option>
                                 {% endfor %}
@@ -157,7 +188,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">Status</th>
                             <th scope="col">Roll</th>
-                            <th scope="col">Name</th>
+                            <th scope="col" class="student_name">Name</th>
                             <th scope="col">Remarks</th>
                         </tr>
                         </thead>
@@ -171,12 +202,12 @@
         
                             <td>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="1" id="present" name="present">
+                                    <input class="form-check-input" type="checkbox" value="{{student.uid}}" id="{{student.uid}}" onchange="get_present(value)" name="present">
                                 </div>
                             </td>
         
                             <td> {{ student.roll }} </td>
-                            <td> {{ student.name }} </td>
+                            <td class="student_name"> {{ student.name }} </td>
                             <td>  </td>
                         </tr>
                         {% endfor %}
@@ -187,7 +218,7 @@
                 </div>
 
                 <div class="col-lg-12 text-center my-5 p-2">
-                    <button type="submit">Present</button>
+                    <button  type="submit">Present</button>
                     <!-- <button type="button" class="btn btn-outline-success">Present</button> -->
                 </div>
             </form>
@@ -207,7 +238,7 @@
                 <input type="file">
             </div>
             <div class="col-lg-6 my-1 mx-auto text-end">
-                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <div id="cancel-btn" class="btn btn-danger">Cancel</div>
                 <button class="btn btn-primary" type="submit">Add</button>
             </div>
         </form>            
@@ -222,5 +253,24 @@
             window.location.href = currentUrl + '?' + params.toString();
         }
      </script> -->
+
+     <script>
+        const presentListValue = {}
+        const presentList = document.getElementById('presentList')
+
+
+        function get_present(value) {
+            const presentData = document.getElementById(value);
+            if (presentData.checked) {
+                presentListValue.append = presentData.value + ','
+                console.log(presentListValue)
+            }
+            
+
+            if (!presentData.checked) {
+                console.log('unchecked')
+            }
+        }
+     </script>
 
 {% endblock %}

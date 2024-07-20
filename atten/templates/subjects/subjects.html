@@ -26,7 +26,7 @@
                 </div>
                 {% endif %}
 
-                <form method="post">
+                <form method="post" class="col-lg-12 row mx-auto">
                   {% csrf_token %}
                     <!-- <fieldset disabled> -->
                       <legend>Filter to show Subjects</legend>
@@ -42,7 +42,6 @@
                         </select>
                       </div>
 
-                      <div class="col-lg-12 row mx-auto">
 
                         <div class="mb-3 col-lg-6">
                           <label for="probidhan" class="form-label">Probidhan</label>
@@ -68,7 +67,6 @@
                           </select>
                         </div>
 
-                      </div>
                       
 
                         <div class="col-lg-12 text-end">
@@ -80,10 +78,20 @@
             </div>
         </div>
 
-        {% if subjects %}
 
         <div class="col-lg-9 bg-light border rounded shadow-sm pt-3">
+          {% if subjects %}
+
             <h1 class="text-center"> {{ selected_department }} - {{ selected_semester }} ({{ selected_probidhan }}) </h1>
+          
+          {% else %}
+
+            <h1 class="text-center"> Filter for Subjects </h1>
+            
+
+          {% endif %}
+
+
             <hr>
             <!-- Search bar -->
            
@@ -130,7 +138,6 @@
 
         </div>
 
-        {% endif %}
     </section>
     <!-- End of student info -->
 

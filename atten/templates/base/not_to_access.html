@@ -4,18 +4,64 @@
 
 <style>
     .not-to-access{
-        font-size: 5em;
         font-weight: 700;
         font-family: sans-serif;
         text-shadow: 0px 0px 10px black;
-        color: white;
+        color: #fff;
+        backdrop-filter: blur(10px);
+        background: url(../../static/img/clg-img.jpg) no-repeat center center;
+        background-size: cover;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
     }
+    .not-to-access::after {
+        content: '';
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        right: -100px;
+        bottom: -100px;
+        background: inherit; 
+        filter: blur(10px);
+        z-index: -1;
+    }
+    .not-to-access h1 {
+        word-spacing: 3px;
+        letter-spacing: 2px;
+        font-size: 3em;
+    }
+
+    .not-to-access p {
+        font-size: 20px;
+        padding: 10px 0px;
+        text-shadow: 1px 1px 20px rgb(220 53 69);
+        color: #fff;
+        font-weight: 800;
+    }
+
+    @media (max-width:1000px) {
+        .not-to-access {
+            text-align: start;
+        }
+
+        .not-to-access h1 {
+            font-size: 2em;
+        }
+    }
+
 </style>
 
-<section style="min-height: 100vh;" class="container-fluid bg-dark d-flex flex-column justify-content-center align-items-center">
-    <div class="not-to-access" >
-        Sorry You are not allowed to access this page!
+<section style="min-height: 100vh;" class="not-to-access container-fluid bg-dark d-flex flex-column justify-content-center align-items-center">
+    <div class="container-fluid mx-auto bg-dark shadow-sm p-3 rounded">
+        <h1  >
+            Oops! This page is not available. <br>
+        </h1>
+        <p class="text-danger">
+            Maybe you're not allowed to access this page! Please contract with the adimnistrator.
+        </p>
     </div>
+    
 </section>
 
 {% endblock %}

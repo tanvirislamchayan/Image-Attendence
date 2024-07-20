@@ -99,10 +99,10 @@ button:hover {
 #login-bg::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -100px;
+    left: -100px;
+    right: -100px;
+    bottom: -100px;
     background: inherit; 
     filter: blur(10px);
     z-index: -1;
@@ -387,7 +387,7 @@ button:hover {
 
 .department_img::after {
     content: '';
-    background: linear-gradient(to bottom, #011755a6, #000);
+    background: linear-gradient(to bottom, #0044ff, #000);
     opacity: .5;
     backdrop-filter: blur(30px);
     filter: blur(20px);

@@ -31,6 +31,7 @@ def add_user(request):
         designation = request.POST.get('designation')
         hiest_digree = request.POST.get('hiest_digree')
         versity = request.POST.get('versity')
+        phone = request.POST.get('phone')
 
         if User.objects.filter(username=email).exists():
             messages.warning(request, "User already exists!")
@@ -53,6 +54,7 @@ def add_user(request):
             designation=designation,
             hiest_digree=hiest_digree,
             versity=versity,
+            phone=phone,
         )
 
         messages.success(request, "User added successfully!")
@@ -118,13 +120,12 @@ def user_login(request):
         elif user_obj.exists():
             #check if account is not varified 
             
-            #if account is varified
-                #check if user authenticated (password)
+            #check if user authenticated (password)
             user_auth = authenticate(username=email, password=password)
             #if true
             if user_auth is not None:
                 login(request, user_auth)
-                return redirect(reverse('home'))
+                return redirect(reverse('students'))
 
             #if False
             else:

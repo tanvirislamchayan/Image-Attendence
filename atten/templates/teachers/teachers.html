@@ -32,7 +32,7 @@
             <div class="col-md-6 row mx-auto my-3">
 
                 <div class="col-lg-6 my-2">
-                    <label for="first_name" class="form-label">First Name</label>
+                    <label for="first_name" class="form-label">First Name <span style="color: red;">*</span> </label>
                     <input type="text" class="form-control" name="first_name" required id="first_name">
                 </div>
 
@@ -44,13 +44,13 @@
                 <h3 class="mb-2">Qualification</h3>
 
                 <div class="col-lg-6 my-2">
-                    <label for="hiest_digree" class="form-label">Hiest Digree</label>
-                    <input type="text" class="form-control" name="hiest_digree" id="hiest_digree">
+                    <label for="hiest_digree" class="form-label">Hiest Digree  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="hiest_digree" required id="hiest_digree">
                 </div>
 
                 <div class="col-lg-6 my-2">
-                    <label for="versity" class="form-label">Collage/Versity</label>
-                    <input type="text" class="form-control" name="versity" id="versity">
+                    <label for="versity" class="form-label">Collage/Versity  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="versity" id="versity">
                 </div>
 
                 <div class="col-lg-6 my-2">
@@ -64,17 +64,22 @@
                 </div>
 
                 <div class="col-lg-6  my-2">
-                    <label for="designation" class="form-label">Designation</label>
-                    <input type="text" class="form-control" name="designation"  id="designation">
+                    <label for="designation" class="form-label">Designation <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="designation" required id="designation">
+                </div>
+
+                <div class="col-lg-12  my-2">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" name="phone"  id="phone">
                 </div>
 
                 <div class="col-lg-6  my-2">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email <span style="color: red;">*</span> </label>
                     <input type="email" class="form-control" name="email" required id="emial">
                 </div>
 
                 <div class="col-lg-6  my-2">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password <span style="color: red;">*</span> </label>
                     <input type="password" class="form-control" name="password" required id="password">
                 </div>
 
@@ -83,7 +88,7 @@
 
             <!-- Button -->
             <div class="col-lg-6 my-1 mx-auto p-2 text-end">
-                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
+                <div id="cancel-btn" class="btn btn-danger"> Cancel</div>
                 <button class="btn btn-primary" type="submit">Add</button>
             </div>
         </form>            
@@ -124,7 +129,20 @@
                         </p>
                         <hr>
                         <span >{{ teacher.hiest_digree }} ({{ teacher.versity }})</span>
+                        <div style="font-size: smaller;" class="col-lg-12 d-flex flex-column mt-3">
+                            {% if teacher.teacher.email %}
+                            <span>
+                                <strong>eMail: <i class="fa-solid fa-mail"></i> </strong> {{ teacher.teacher.email }}
+                            </span>
+                            {% endif %}
+                            {% if teacher.phone %}
+                            <span>
+                                <strong><i class="fa-solid fa-phone"></i> </strong> {{ teacher.phone }}
+                            </span>
+                            {% endif %}
+                        </div>
                     </div>
+                    
                 </div>
             </div>
 

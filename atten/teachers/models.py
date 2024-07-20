@@ -15,6 +15,7 @@ class TeacherProfile(BaseModel):
     hiest_digree = models.CharField(max_length=100, null=True, blank=True)
     versity = models.CharField(max_length=100, null=True, blank=True)
     routine_img = models.ImageField(upload_to='routines', null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.teacher.first_name} {self.teacher.last_name}'

@@ -10,6 +10,11 @@ def show_subjects(request):
     subjects = Subjects.objects.all()
     probidhans = Probidhan.objects.all()
 
+    for department in departments:
+        print(department.subjects_of_department)
+    
+    print(request.user.teacherProfile)
+
     context = {
         'page':'Subjects',
         'departments':departments,
