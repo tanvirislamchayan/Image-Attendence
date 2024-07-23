@@ -132,11 +132,30 @@
 
               </table>
             </div>
-
-            
-
-
         </div>
+
+        <!-- {% for department in departments %}
+
+
+        <div class="col-lg-12 text-center mx-auto">
+          <h1>
+            {{department}}
+          </h1>
+          {% for subject in subjects %}
+          <div class="col-lg-12">
+            {% for semester in semesters %}
+            <h2>{{ semester }}</h2>
+            {% for subject in subjects %}
+              {% if subject.department == department and subject.semester == semester %}
+               <h4> {{subject}} </h4>
+              {% endif %}
+            {% endfor %}
+            {% endfor %}
+            
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %} -->
 
     </section>
     <!-- End of student info -->

@@ -1,12 +1,14 @@
 from django.db import models
 from base.models import BaseModel
 from departments.models import Departmets
+from collage.models import Collage
 from django.contrib.auth.models import User
 
 # Create your models here.
 
 class TeacherProfile(BaseModel):
 
+    collage = models.ForeignKey(Collage, on_delete=models.CASCADE, null=True, blank=True, related_name='teacherCollage')
     teacher = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacherProfile')
     is_active = models.BooleanField(default=True)
     designation = models.CharField(max_length=100, null=True, blank=True)

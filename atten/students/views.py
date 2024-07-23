@@ -39,7 +39,7 @@ def show_students(request):
 
     if request.user.teacherProfile and request.user.teacherProfile.is_active == True:
         selected_teacher = request.user.username
-        selected_department = request.user.teacherProfile.department.name
+        selected_department = request.user.teacherProfile.department.name if request.user.teacherProfile.department else False
 
         context['selected_teacher'] = selected_teacher
         context['selected_department'] = selected_department

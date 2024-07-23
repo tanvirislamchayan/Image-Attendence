@@ -10,10 +10,9 @@ def show_subjects(request):
     subjects = Subjects.objects.all()
     probidhans = Probidhan.objects.all()
 
-    for department in departments:
-        print(department.subjects_of_department)
+    print(departments)
     
-    print(request.user.teacherProfile)
+    # print(request.user.teacherProfile)
 
     context = {
         'page':'Subjects',
@@ -36,5 +35,7 @@ def show_subjects(request):
         context['selected_department'] = department
         context['selected_semester'] = semester
         context['selected_probidhan'] = probidhan
+
+
 
     return render(request, 'subjects/subjects.html', context)

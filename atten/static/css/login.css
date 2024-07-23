@@ -1,0 +1,41 @@
+#login-bg {
+    background: url(../../static/img/clg-img.jpg) no-repeat center center ;
+    background-size: cover;
+    background-color: #fff5;
+  }
+
+  #login-bg::after {
+    /* background-color: red; */
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    background-color: #0005;
+  }
+
+  #login-bg .main-div {
+    backdrop-filter: blur(7px);
+    background-color: #fff5 !important;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  #login-bg .main-div input {
+    background-color: transparent !important;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    /* border: 1px solid  black !important; */
+  }
+
+  #login-bg .main-div label {
+    color: #fff;
+    font-size: 20px;
+    text-shadow: 0px 0px 10px #0008;
+    border-bottom: 1px solid white;
+  }
+

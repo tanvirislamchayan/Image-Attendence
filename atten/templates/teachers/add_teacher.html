@@ -1,0 +1,103 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block start %}
+
+<style>
+
+</style>
+
+<!--   Add teacher sections start -->
+<section style="min-height: 100vh;" class=" background overflow-hidden container-fluid d-flex justify-content-center align-items-center">
+    <div class="container row mx-auto ">
+        <form class="col-lg-8 mx-auto rounded" action="#" method="post">
+
+            {% csrf_token %}
+            <!-- input form -->
+            <div class="col-md-12 row mx-auto">
+
+                <div class=" col-lg-6 my-2">
+                    <label for="first_name" class="form-label">First Name <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="first_name" required id="first_name">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="last_name" class="form-label">last Name</label>
+                    <input type="text" class="form-control" name="last_name" id="last_name">
+                </div>
+
+                <h3 class="mt-4 mb-0 text-center">Qualification</h3>
+
+                <div class="col-lg-6 my-2">
+                    <label for="hiest_digree" class="form-label">Hiest Digree  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="hiest_digree" required id="hiest_digree">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="versity" class="form-label">Collage/Versity  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="versity" id="versity">
+                </div>
+
+                <h3 class="mt-4 mb-0 text-center">Details</h3>
+
+                <div class="col-lg-12 my-2">
+                    <label for="collage" class="form-label">Collages  <span style="color: red;">*</span> </label>
+                    <select name="collage" id="collage" required class="form-select form-select">
+                        <option ></option>
+                        {% for department in departments %}
+                        <option value="{{department.name}}"> {{department.name}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="department" class="form-label">Department</label>
+                    <select name="department" id="department" class="form-select form-select">
+                        <option ></option>
+                        {% for department in departments %}
+                        <option value="{{department.name}}"> {{department.name}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="designation" class="form-label">Designation <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="designation" required id="designation">
+                </div>
+                
+                <div class="col-lg-6  my-2">
+                    <label for="email" class="form-label">Email <span style="color: red;">*</span> </label>
+                    <input type="email" class="form-control" name="email" required id="emial">
+                </div>
+                
+                <div class="col-lg-6  my-2">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" name="phone"  id="phone">
+                </div>
+
+                <div class="col-lg-6  my-2">
+                    <label for="password" class="form-label">Password <span style="color: red;">*</span> </label>
+                    <input type="password" class="form-control" name="password" required id="password">
+                </div>
+
+
+                <div class="col-lg-6  my-2">
+                    <label for="confirm_pass" class="form-label">Password <span style="color: red;">*</span> </label>
+                    <input type="password" class="form-control" name="confirm_pass" required id="password">
+                </div>
+
+
+
+            </div>
+
+            <!-- Button -->
+            <div class="col-lg-12 my-1 mx-auto p-3 text-end">
+                <button class="btn1" type="submit">Add</button>
+            </div>
+        </form>            
+    </div>
+</section>
+
+<!-- add user section end -->
+
+
+{% endblock %}

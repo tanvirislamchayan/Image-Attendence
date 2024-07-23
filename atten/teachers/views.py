@@ -21,7 +21,7 @@ def teachers_info(request):
     return render(request, 'teachers/teachers.html', context=context)
 
 
-def add_user(request):
+def add_teacher(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -58,7 +58,7 @@ def add_user(request):
         )
 
         messages.success(request, "User added successfully!")
-    return redirect('teachers')
+    return render(request, 'teachers/add_teacher.html')
 
 
 def teacher_detail(request, uid):

@@ -1,0 +1,79 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block start %}
+
+<style>
+
+</style>
+
+<!--   Add teacher sections start -->
+<section style="min-height: 100vh;" class=" background overflow-hidden container-fluid d-flex justify-content-center align-items-center">
+    <div class="container row mx-auto ">
+        <form class="col-lg-8 mx-auto rounded" action="#" method="post">
+
+            {% csrf_token %}
+            <!-- input form -->
+            <div class="col-md-12 row mx-auto">
+
+                <div class=" col-lg-12 my-2">
+                    <label for="first_name" class="form-label">Collage Name <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" name="first_name" required id="first_name">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" name="category" id="category">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="code" class="form-label">Code <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="code" id="code">
+                </div>
+
+                <h3 class="mt-4 mb-0 text-center">Location</h3>
+
+                <div class="col-lg-6 my-2">
+                    <label for="road" class="form-label">Area/Road</label>
+                    <input type="text" class="form-control" name="road" id="road">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="post_office" class="form-label">Post Office  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="post_office" id="post_office">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="post_code" class="form-label">Post Code  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="post_code" id="post_code">
+                </div>
+
+                <div class="col-lg-6 my-2">
+                    <label for="destrict" class="form-label">Destrict  <span style="color: red;">*</span> </label>
+                    <input type="text" class="form-control" required name="destrict" id="destrict">
+                </div>
+
+
+                <h3 class="mt-4 mb-0 text-center">Details</h3>
+
+
+                <div class="col-lg-12  my-2">
+                    <textarea name="details" class="form-control" id="" cols="30" rows="10"></textarea>
+                </div>
+
+
+
+
+            </div>
+
+            <!-- Button -->
+            <div class="col-lg-12 my-1 mx-auto p-3 text-end">
+                <button class="btn1" type="submit">Add</button>
+            </div>
+        </form>            
+    </div>
+</section>
+
+<!-- add user section end -->
+
+
+{% endblock %}
