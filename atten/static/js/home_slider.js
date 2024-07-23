@@ -1,10 +1,19 @@
-let nextBtn = document.querySelector('.next')
-let prevBtn = document.querySelector('.prev')
+let nextBtn = document.querySelector('.next');
+let prevBtn = document.querySelector('.prev');
 
-let slider = document.querySelector('.slider')
-let sliderList = slider.querySelector('.slider .list')
-let thumbnail = document.querySelector('.slider .thumbnail')
-let thumbnailItems = thumbnail.querySelectorAll('.item')
+let slider = document.querySelector('.slider');
+let sliderList = slider.querySelector('.slider .list');
+let thumbnail = document.querySelector('.slider .thumbnail');
+let thumbnailItems = thumbnail.querySelectorAll('.item');
+
+let smallThambnail = slider.querySelector('.thumbnail')
+
+
+if (thumbnailItems.length == 1) {
+    nextBtn.classList.add('d-none');
+    prevBtn.classList.add('d-none');
+    smallThambnail.classList.add('d-none');
+}
 
 thumbnail.appendChild(thumbnailItems[0])
 
@@ -44,6 +53,12 @@ function moveSlider(direction) {
     }, {once: true}) // Remove the event listener after it's triggered once
 }
 
+
 setInterval((() => {
-    moveSlider('next')
+    if (thumbnailItems.length > 1) {
+        moveSlider('next');
+        console.log('sliding')
+    }
 }), 6000)
+
+
