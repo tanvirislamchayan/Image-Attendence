@@ -1,0 +1,64 @@
+let nextBtn = document.querySelector('.next');
+let prevBtn = document.querySelector('.prev');
+
+let slider = document.querySelector('.slider');
+let sliderList = slider.querySelector('.slider .list');
+let thumbnail = document.querySelector('.slider .thumbnail');
+let thumbnailItems = thumbnail.querySelectorAll('.item');
+
+let smallThambnail = slider.querySelector('.thumbnail')
+
+
+if (thumbnailItems.length == 1) {
+    nextBtn.classList.add('d-none');
+    prevBtn.classList.add('d-none');
+    smallThambnail.classList.add('d-none');
+}
+
+thumbnail.appendChild(thumbnailItems[0])
+
+// Function for next button 
+nextBtn.onclick = function() {
+    moveSlider('next')
+}
+
+
+// Function for prev button 
+prevBtn.onclick = function() {
+    moveSlider('prev')
+}
+
+
+function moveSlider(direction) {
+    let sliderItems = sliderList.querySelectorAll('.item')
+    let thumbnailItems = document.querySelectorAll('.thumbnail .item')
+    
+    if(direction === 'next'){
+        sliderList.appendChild(sliderItems[0])
+        thumbnail.appendChild(thumbnailItems[0])
+        slider.classList.add('next')
+    } else {
+        sliderList.prepend(sliderItems[sliderItems.length - 1])
+        thumbnail.prepend(thumbnailItems[thumbnailItems.length - 1])
+        slider.classList.add('prev')
+    }
+
+
+    slider.addEventListener('animationend', function() {
+        if(direction === 'next'){
+            slider.classList.remove('next')
+        } else {
+            slider.classList.remove('prev')
+        }
+    }, {once: true}) // Remove the event listener after it's triggered once
+}
+
+
+setInterval((() => {
+    if (thumbnailItems.length > 1) {
+        moveSlider('next');
+        console.log('sliding')
+    }
+}), 8000)
+
+
