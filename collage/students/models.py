@@ -3,15 +3,18 @@ from base.models import BaseModel
 from subjects.models import Semester, Probidhan
 from departments.models import Departments
 from collages.models import Collage
+from teachers.models import TeacherProfile
+from subjects.models import Subjects
 
 # Create your models here.
 
+#model
 class GenDate(BaseModel):
-    start_date = models.DateField()
-    end_date = models.DateField()
+    teacher = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f'{self.start_date} - {self.end_date}'
+        return f'{self.teacher} - {self.date}'
     
 
 class StudentShift(BaseModel):
@@ -36,3 +39,22 @@ class Student(BaseModel):
 
     def __str__(self) -> str:
         return self.name
+    
+
+class Attendence(BaseModel):
+    collage = models.ForeignKey(Collage, on_delete=models.CASCADE, null=True, blank=True, related_name='attendence_collage')
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE, null=True, blank=True, related_name='attendence_department')
+    probidhan = models.ForeignKey(Probidhan, on_delete=models.SET_NULL, null=True, blank=True, related_name='attendence_probidhan')
+    semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, null=True, blank=True, related_name='attendence_semester')
+    group = models.ForeignKey(StudentShift, on_delete=models.SET_NULL, null=True, blank=True, related_name='attendence_group')
+    date = models.DateField(null=True, blank=True)
+    subject = models.ForeignKey(Subjects, on_delete=models.SET_NULL, null=True, blank=True, related_name='attendence_subject')
+    teacher = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='attendence_teacher')
+
+    present_students = models.ManyToManyField(Student, blank=True, related_name='present_attendences')
+    absent_students = models.ManyToManyField(Student, blank=True, related_name='absent_attendences')
+    
+    def __str__(self) -> str:
+        name = f"{self.department} - {self.date} - {self.collage}"
+        return name
+

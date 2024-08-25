@@ -18,7 +18,7 @@
         .base-select {
             background: transparent;
             border: 0;
-            color: rgb(255, 196, 0);
+            color: rgb(0, 26, 225);
             font-size: 22px;
             font-weight: 700;
             text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
@@ -34,12 +34,18 @@
         <div class="mt-0  p-0 bg-white navbar ">
             <div class="container mx-auto m-2 p-1 d-flex justify-content-between align-items-center nav-pos nav">
 
+
+
                 <div id="nav-item" class="nav-item d-flex justify-content-end">
+
+                    
+    
+
                     <div class="d-flex align-items-center {% if request.path == '/' or request.path == '' %} div-active {%endif%} ">
                         <a href="{% url 'home' %}">Home</a>
                     </div>
 
-                    {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser %}
         
                     <div class=" info-div ">
                         <div style="text-align: left !important;" class="info {% if '/collage/' in request.path %} div-active-info {% endif %}">
@@ -61,6 +67,11 @@
                         <a href="#">Collages</a>
                     </div>
                     {% endif %}
+
+                    
+                    <div class="d-flex align-items-center {% if '/departments/' in request.path %} div-active {%endif%}">
+                        <a href="{% url 'departments' %}">Departments</a>
+                    </div>
         
 
                     {% if request.user.is_superuser %}
@@ -81,7 +92,7 @@
                         </div>
 
 
-                    {% else %}
+                    {% elif request.user.is_authenticated %}
         
                     <div class="d-flex align-items-center {% if '/teachers/' in request.path %} div-active {% endif %}">
                         <a href="{% url 'teachers' %}">Teachers Info</a>
@@ -90,9 +101,7 @@
                     {% endif %}
 
 
-                    <div class="d-flex align-items-center {% if '/departments/' in request.path %} div-active {%endif%}">
-                        <a href="{% url 'departments' %}">Departments</a>
-                    </div>
+                    
                     
 
                     {% if request.user.is_authenticated %}
@@ -119,15 +128,21 @@
 
 
 
+                    {% if request.user.is_authenticated %}
+
                     <div class="d-flex align-items-center {% if '/subjects/' in request.path %} div-active {%endif%}">
-                        <a href="{% url 'subjects' %}">Subject</a>
+                        <a href="{% url 'subjects' %}">Subjects</a>
                     </div>
+
+                    {% endif %}
 
                     {% if user.is_authenticated %}
                         <div class="xtra d-flex align-items-center d-none">
                             <a href="{% url 'logout_user' %}">Logout</a>
                         </div>
                     {% else %}
+
+                   
 
                         <div class="xtra d-flex align-items-center d-none {% if 'teachers/login/' in request.path %} div-active {%endif%}">
                             <a href="{% url 'login' %}">Login|Signup</a>
@@ -149,17 +164,7 @@
                             <a href="{% url 'login' %}">Login|Signup</a>
                         </div>
                     {% else %}
-                        <form action="" method="post">
-                            <div class="xtra d-flex align-items-center">
-                            
-                                <select name="" id="" class="form-select base-select">
-                                    <option value="ipi">Image Polytechninc Institute</option>
-                                    <option value="ipi">Image Polytechninc Institute</option>
-                                    <option value="ipi">Image Polytechninc Institute</option>
-                                </select>
-
-                            </div>
-                        </form>
+                        
 
                         <div class="xtra d-flex align-items-center">
                             <a href="{% url 'logout_user' %}">Logout</a>
@@ -199,10 +204,15 @@
                 <hr>
                 <br>
                 Designed and Developed by - <a target="_blank" href="https://www.facebook.com/titanvir01">Tanvir Islam (CST 21-22)</a> |
-                Helped by - <a href="#">Muslima Jahan Mohona (CST 21-22)</a> |
+                Helped by - <a href="#">Mohona (CST 21-22)</a> |
                 Guided by - <a target="_blank" href="https://www.facebook.com/EngrManikUllah">Engr Manik Ullah (CI CST)</a>
             </p>
         </div>
     </footer>
 </body>
+
+<script>
+
+</script>
+
 </html>

@@ -4,7 +4,12 @@
 
 
 
-
+<style>
+    .add-collage {
+        background-color: #fff5 !important;
+        backdrop-filter: blur(10px);
+    }
+</style>
 
 
     <!-- Add section -->
@@ -26,15 +31,33 @@
     {% endif %}
 
 
-    <section id="add-section" class="border rounded shadow">
+    <section id="add-section" class="border rounded shadow add-collage">
         <h2 class="text-center my-2">Enter Department Info.</h2>
         <form class="py-3" action="{% url 'create_dep' %}" method="post">
 
             {% csrf_token %}
             <!-- input form -->
-            <div class="col-md-6 row mx-auto my-3">
+            <div class="col-md-7 row mx-auto my-3">
+
 
                 <div class="col-lg-12 my-2">
+                    <label for="collage" class="form-label">Collage</label>
+                    <!-- <input type="text" class="form-control" name="department_name" required id="department_name"> -->
+                     <select name="collage" id="collage" class="form-select">
+                        <option value=""></option>
+                        {% for collage in collages %}
+                        <option value=" {{ collage.slug }} "> {{ collage.name }} </option>
+                        {% endfor %}
+                     </select>
+                </div>
+
+
+                <div class="col-lg-5 my-2">
+                    <label for="department_field" class="form-label">Field</label>
+                    <input type="text" class="form-control" name="department_field" required id="department_field">
+                </div>
+
+                <div class="col-lg-7 my-2">
                     <label for="department_name" class="form-label">Name Of Department</label>
                     <input type="text" class="form-control" name="department_name" required id="department_name">
                 </div>

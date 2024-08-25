@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from departments.models import Departments
+from collages.models import Collage
 from . models import TeacherProfile
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -37,43 +38,94 @@ def teachers_info(request):
 
 
 def add_teacher(request):
+    collages = Collage.objects.all()
+    departments = Departments.objects.all()
+
+    context = {
+        'page':'Add Teacher',
+        'collages':collages,
+        # 'departments':departments,
+    }
+
+    if 'collage' in request.GET:
+        collage = request.GET.get('collage')
+        departments = Departments.objects.filter(collage__slug = collage)
+        context['collage_slug'] = collage
+        context['departments'] = departments
+    
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        department = request.POST.get('department')
-        designation = request.POST.get('designation')
+
+        image = request.FILES.get('teacher_image')
         hiest_digree = request.POST.get('hiest_digree')
         versity = request.POST.get('versity')
+        # collage = request.POST.get('collage')
+        department = request.POST.get('department')
+        designation = request.POST.get('designation')
         phone = request.POST.get('phone')
 
-        if User.objects.filter(username=email).exists():
-            messages.warning(request, "User already exists!")
-            return redirect('teachers')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_pass = request.POST.get('confirm_pass')
+
+        user_esxists = User.objects.filter(username=email)
+        if user_esxists.exists():
+            messages.warning(request, 'User already exists!')
+            return HttpResponseRedirect(request.path_info)
+        
+        if password != confirm_pass:
+            messages.warning(request, "Password doesn't match!")
+
+            context = {
+                'page':'Add Teacher',
+                'collages':collages,
+                'departments':departments,
+
+                'first_name':first_name,
+                'last_name':last_name,
+                'hiest_digree':hiest_digree,
+                'versity':versity,
+                'collage_slug':collage,
+                'department_name':department,
+                'designation':designation,
+                'email':email,
+                'phone':phone,
+                'password':password,
+            }
+            return render(request, 'teachers/add_teacher.html', context=context)
+            
 
         user_obj = User.objects.create(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            username=email,
-        )
-        user_obj.set_password(password)
-        user_obj.save()
-        
-        department_obj = Departments.objects.get(name=department)
-        
-        TeacherProfile.objects.create(
-            teacher=user_obj,
-            department=department_obj,
-            designation=designation,
-            hiest_digree=hiest_digree,
-            versity=versity,
-            phone=phone,
+            first_name = first_name,
+            last_name = last_name,
+            email = email,
+            username = email,
         )
 
-        messages.success(request, "User added successfully!")
-    return render(request, 'teachers/add_teacher.html')
+        user_obj.set_password(password)
+        user_obj.save()
+
+        collage_obj = Collage.objects.filter(slug = collage).first()
+        print(collage_obj)
+
+        department_obj = Departments.objects.filter(name=department).first()
+        print(department_obj)
+
+        TeacherProfile.objects.create(
+            teacher = user_obj,
+            collage = collage_obj,
+            department = department_obj,
+            designation = designation,
+            hiest_digree = hiest_digree,
+            versity = versity,
+            phone = phone,
+            teacher_image = image
+        )
+
+
+        
+    return render(request, 'teachers/add_teacher.html', context=context)
 
 
 def teacher_detail(request, uid):
@@ -123,45 +175,34 @@ def upload_routine(request):
 def user_login(request):
     if request.method == 'POST':
         email = request.POST.get('username')
-        password = request.POST.get('password') 
+        password = request.POST.get('password')
 
-        #Get user
-        user_obj = User.objects.filter(username=email)
-        
+        # Get user
+        try:
+            user_obj = User.objects.get(username=email)
+        except User.DoesNotExist:
+            messages.warning(request, 'Invalid Username')
+            return HttpResponseRedirect(request.path_info)
 
-        #check user if not exists
-        if not user_obj.exists():
-            messages.warning(request, f'Invalid Username')
+        # Check if the user's teacher profile is active, except for superusers
+        if not user_obj.is_superuser:
+            teacher_profile = TeacherProfile.objects.filter(teacher__username=email, is_active=True)
+            if not teacher_profile.exists():
+                messages.warning(request, "You're not allowed! Your ID has been deactivated. Please contact the administrator.")
+                return render(request, 'base/not_to_access.html', {'page': "Not allowed!"})
 
-        # if user_obj.teacherProfile.is_active == False:
-            
-        #     return HttpResponseRedirect(request.path_info)
-        
-        #if user exists 
-        elif user_obj.exists():
-            #check if account is not varified 
-            teacher_profile = TeacherProfile.objects.filter(teacher__username = email, is_active =True)
-            if not teacher_profile:
-                messages.warning(request, f"You're not allowed! Your ID has been deactivated. Please contract with the administrator.")
-                return render(request, 'base/not_to_access.html', {'page':"Not allowed!"})
-            
-            #check if user authenticated (password)
-            user_auth = authenticate(username=email, password=password)
-            #if true
-            if user_auth is not None:
-                login(request, user_auth)
-                return redirect(reverse('attendence'))
+        # Authenticate the user
+        user_auth = authenticate(username=email, password=password)
+        if user_auth is not None:
+            login(request, user_auth)
+            return redirect(reverse('attendence'))
+        else:
+            messages.warning(request, 'Invalid Password')
+            return HttpResponseRedirect(request.path_info)
 
-            #if False
-            else:
-                messages.warning(request, f'Invalid Password')
-                return HttpResponseRedirect(request.path_info)
-        
-    page = 'User Login'
-    context = {
-        'page': page
-    }
+    context = {'page': 'User Login'}
     return render(request, 'teachers/login.html', context)
+
 
 
 def logout_user(request):

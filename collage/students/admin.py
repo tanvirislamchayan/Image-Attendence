@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(GenDate)
 admin.site.register(StudentShift)
 admin.site.register(Student)
+admin.site.register(Attendence)

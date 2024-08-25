@@ -45,10 +45,10 @@
         border: 0;
         padding: 15px;
         border-radius: 10px;
-        box-shadow: 0px 0px 20px rgba(220, 53, 69) inset;
+        /* box-shadow: 0px 0px 20px rgba(220, 53, 69) inset; */
         background-color: rgba(220, 53, 69, .5);
-        color:red !important;
-        text-shadow: 1px 1px 10px rgb(0, 0, 0);
+        color: red !important;
+        text-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5);
         font-size: 20px;
         font-weight: 900 !important;
         letter-spacing: .5px;
@@ -81,7 +81,7 @@
         <div class="message-box d-flex justify-content-center flex-column align-items-center">
         {% if messages %}
             {% for message in messages %}
-                <div>
+                <div class="bg-warning">
                     {{message}}
                 </div>
                 {% endfor %}

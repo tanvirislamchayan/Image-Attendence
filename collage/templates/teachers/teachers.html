@@ -4,13 +4,62 @@
 
 
 <style>
-    .teachers {
-        border-radius: .3rem;
-        flex-basis: 17%;
-        cursor: pointer;
-        text-align: center;
-        margin: 0px 5px 0px 5px;
+    .bg {
+        background: linear-gradient(to left top, rgba(0, 0, 255, 0.5), rgba(247, 0, 255, 0.5));
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
 
+    .bg::after {
+        background: inherit;
+        opacity: 50%;
+        filter: blur(20px);
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+    }
+
+    .teachers-section {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .teachers {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: .3rem;
+        cursor: pointer;
+        flex-basis: 10%;
+        text-align: center;
+        margin: 15px 12px;
+        position: relative;
+        z-index: 2;
+        /* max-height: 43vh; */
+    }
+
+    .teachers::after {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        z-index: -1;
+        transition: .3s;
+        border-radius: .3rem;
+        transform: scale(0);
+        transform-origin: right top;
+    }
+
+    .teachers:hover::after{
+        transform: scale(1);
     }
 
     .teachers .image {
@@ -35,24 +84,104 @@
     }
 
     .name {
-        font-size: 20px;
+        /* font-size: 18px; */
         font-weight: 500;
-        margin-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.654);
+        margin-top: 5px;
         padding: 0px 5px 0px 5px;
+        color: white;
     }
 
-    .designation {
+    .designation, .collage {
         padding: 0px 5px 0px 5px;
-        font-size: 15px;
+        font-size: 12px;
+        color: white;
         font-weight: 500;
     }
 
-    .department, .collage {
+
+    /* .department, .collage {
        font-size: 12px;
        font-weight: 500;
+    } */
+
+    @media (max-width: 575.98px) {
+        .teachers {
+            flex-basis: 100% !important;
+            margin: 10px 0px 10px 0px !important;
+            width: 100%;
+        }
+
+        .teachers .image {
+            height: 300px !important;
+            width: 270px !important;
+        }
+
+        .name {
+            font-size: 22px !important;
+            padding: 0px 5px 0px 5px !important;
+        }
     }
 
-    @media (max-width:699px) {
+    @media (min-width: 576px) and (max-width: 767.98px) { 
+ 
+        .teachers {
+            flex-basis: 45% !important;
+            margin: 10px !important;
+        }
+
+        .teachers .image {
+            height: 200px !important;
+            width: 170px !important;
+        }
+
+        .name {
+        font-size: 22px !important;
+        padding: 0px 5px 0px 5px !important;
+        }
+     }
+
+     @media (min-width: 768) and (max-width: 991.98px) { 
+        .teachers {
+            flex-basis: 33% !important;
+            margin: 10px 10px;
+        }
+
+        .teachers .image {
+            height: 160px !important;
+            width: 130px;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199.98px) { 
+        .teachers {
+            flex-basis: 20% !important;
+            margin: 10px 10px;
+        }
+
+        .teachers .image {
+            height: 160px !important;
+            width: 130px;
+        }
+
+        .name {
+            font-size: 18px;
+            padding: 0px 5px 0px 5px;
+        }
+
+        .designation {
+            padding: 0px 5px 0px 5px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .department, .collage {
+            font-size: 10px;
+            font-weight: 500;
+        }
+    }
+
+    /* @media (max-width:699px) {
         .teachers {
             flex-basis: 100%;
             
@@ -84,20 +213,20 @@
             overflow: hidden;
             border-radius: .3rem;
         }
-    }
+    } */
 
 </style>
 
     <!-- Start of Teachers info -->
 
     {% include "base/messages.html" %}
-    <section style="min-height: 100vh;" class="container-fluid">
+    <section style="min-height: 100vh; padding-top: 70px;" class="container-fluid bg">
 
-        <section style="margin-top: 70px;" class="container mx-auto d-flex flex-wrap justify-content-center">
+        <section  style="" class="teachers-section container mx-auto">
 
             {% for teacher in teachers %}
 
-            <div class="teachers p-2 mb-2 bg-light shadow-sm border" onclick="get_teacher_info('{{ teacher.uid }}')">
+            <div class="teachers p-2 border shadow-sm" onclick="get_teacher_info('{{ teacher.uid }}')">
                 <div class="image mx-auto">
                     {% if teacher.teacher_image %}
                     
@@ -110,15 +239,16 @@
                     {% endif %}
                 </div>
                 <div class="name">{{ teacher.teacher.first_name }} {{ teacher.teacher.last_name }} </div>
-                <div class="designation"> {{ teacher.designation }} </div>
-                <div class="department"> {{ teacher.department }} </div>
-                <div class="collage"> Image Polytechnic Institute </div>
+                <div class="designation"> {{ teacher.designation }} {% if teacher.department %} - {{teacher.department.field}} {% endif %} </div>
+                <div class="collage"> {{ teacher.collage.name }} </div>
 
             </div>
 
             
 
             {% endfor %}
+
+           
 
           </section> 
 

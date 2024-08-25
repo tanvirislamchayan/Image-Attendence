@@ -347,8 +347,19 @@ button:hover {
     display: none !important;
 }
 
-@media (max-width:899px) {
+@media (max-width:1000px) {
 
+    .base-form {
+        display: block !important;
+    }
+
+    .base-form .base-select {
+        color:  black;
+        font-size: 20px;
+        padding: 0px !important;
+        text-wrap: wrap !important;
+        text-shadow: none !important;
+    }
 
     .xtra {
         display: block !important;
@@ -443,11 +454,8 @@ button:hover {
 
 .date-field {
     cursor: pointer;
-    padding: 5px;
-    margin: 5px;
-    border: 1px solid #ddd;
     border-radius: 4px;
-    /* display: inline-block; */
+    padding: 5px;
 }
 .date-field:hover {
     background-color: #f0f0f0;

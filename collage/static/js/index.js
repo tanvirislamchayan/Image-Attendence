@@ -109,3 +109,14 @@ document.querySelectorAll('.fileInput').forEach(input => {
     });
 });
 
+
+
+// base-collage
+
+document.addEventListener('DOMContentLoaded', () => {
+    var collageVlue = document.getElementById
+});
+
+function collage(value) {
+
+}

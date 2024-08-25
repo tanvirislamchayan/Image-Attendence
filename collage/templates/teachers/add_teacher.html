@@ -3,86 +3,132 @@
 {% block start %}
 
 <style>
+    .teacher_image {
+        height: 170px;
+        width: 140px;
+        background-color: red;
+        inset: 0,0,0,0;
+        overflow: hidden;
+        cursor: pointer;
+    }
 
+    .teacher_image img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: .3s;
+    }
+
+    .teacher_image:hover img{
+        transform: scale(1.1);
+    }
+
+    .teacher_input {
+        width: 140px;
+        padding: 10px;
+    }
 </style>
 
 <!--   Add teacher sections start -->
 <section style="min-height: 100vh;" class=" background overflow-hidden container-fluid d-flex justify-content-center align-items-center">
     <div class="container row mx-auto ">
-        <form class="col-lg-8 mx-auto rounded" action="#" method="post">
+        <form class="col-lg-8 mx-auto rounded" action="#" method="post" enctype="multipart/form-data">
 
             {% csrf_token %}
+            <h1 class="text-center">Add Teacher</h1>
+            {% include "base/messages.html" %}
             <!-- input form -->
             <div class="col-md-12 row mx-auto">
 
-                <div class=" col-lg-6 my-2">
-                    <label for="first_name" class="form-label">First Name <span style="color: red;">*</span> </label>
-                    <input type="text" class="form-control" name="first_name" required id="first_name">
+                <div class="col-lg-12 my-2">
+                    <label for="collage" class="form-label">Collages  <span style="color: red;">*</span> </label>
+                    <select name="collage" id="collage"   class="form-select" onchange="get_value(this.value)">
+                        <option ></option>
+                        {% for collage in collages %}
+                        <option style="color: black !important;"  value="{{collage.slug}}" {% if collage_slug == collage.slug %} selected {% endif %}>  {{ collage.code }} - {{collage.name}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-12 row d-flex mx-auto">
+
+                    
+
+                    <div class="col-lg-8 col-md-8 col-sm-8 order-lg-1 order-md-2 order-sm-2 order-xsm-2">
+                        <div class=" col-lg-12 my-2">
+                            <label for="first_name" class="form-label">First Name <span style="color: red;">*</span> </label>
+                            <input type="text" class="form-control" name="first_name" value="{{first_name}}"   id="first_name">
+                        </div>
+        
+                        <div class="col-lg-12 my-2">
+                            <label for="last_name" class="form-label">last Name</label>
+                            <input type="text" class="form-control" name="last_name" value="{{last_name}}" id="last_name">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 order-lg-2  order-md-1 order-xs-1 order-sm-1 order-xsm-1 d-flex flex-column align-items-end ">
+                        <div class="teacher_image rounded border">
+                            <img src="../../static/img/no_img.jpeg" id="previewImg" alt="">
+                        </div>
+                        <div class="teacher_input d-flex justify-content-center align-items-center">
+                            <input class="d-none" type="file" accept="image/*" name="teacher_image" id="teacher_image" onchange="showTeacherImg(event)">
+                            <label class="label-button" id="inputImg" for="teacher_image" >Uplaod</label>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-6 my-2">
-                    <label for="last_name" class="form-label">last Name</label>
-                    <input type="text" class="form-control" name="last_name" id="last_name">
-                </div>
+                
 
                 <h3 class="mt-4 mb-0 text-center">Qualification</h3>
 
                 <div class="col-lg-6 my-2">
                     <label for="hiest_digree" class="form-label">Hiest Digree  <span style="color: red;">*</span> </label>
-                    <input type="text" class="form-control" name="hiest_digree" required id="hiest_digree">
+                    <input type="text" class="form-control" name="hiest_digree" value="{{hiest_digree}}"  id="hiest_digree">
                 </div>
 
                 <div class="col-lg-6 my-2">
                     <label for="versity" class="form-label">Collage/Versity  <span style="color: red;">*</span> </label>
-                    <input type="text" class="form-control" required name="versity" id="versity">
+                    <input type="text" class="form-control"   name="versity" value="{{versity}}" id="versity">
                 </div>
 
                 <h3 class="mt-4 mb-0 text-center">Details</h3>
 
-                <div class="col-lg-12 my-2">
-                    <label for="collage" class="form-label">Collages  <span style="color: red;">*</span> </label>
-                    <select name="collage" id="collage" required class="form-select form-select">
-                        <option ></option>
-                        {% for department in departments %}
-                        <option value="{{department.name}}"> {{department.name}} </option>
-                        {% endfor %}
-                    </select>
-                </div>
+
 
                 <div class="col-lg-6 my-2">
                     <label for="department" class="form-label">Department</label>
                     <select name="department" id="department" class="form-select form-select">
                         <option ></option>
                         {% for department in departments %}
-                        <option value="{{department.name}}"> {{department.name}} </option>
+                        <option style="color: black !important;" value="{{department.name}}" {% if department_name == department.name %} selected {% endif %}> {{department.name}} </option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="col-lg-6  my-2">
                     <label for="designation" class="form-label">Designation <span style="color: red;">*</span> </label>
-                    <input type="text" class="form-control" name="designation" required id="designation">
+                    <input type="text" class="form-control" name="designation" value="{{designation}}"  id="designation">
                 </div>
                 
                 <div class="col-lg-6  my-2">
                     <label for="email" class="form-label">Email <span style="color: red;">*</span> </label>
-                    <input type="email" class="form-control" name="email" required id="emial">
+                    <input type="email" class="form-control" name="email"   value="{{email}}" id="emial">
                 </div>
                 
                 <div class="col-lg-6  my-2">
                     <label for="phone" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" name="phone"  id="phone">
+                    <input type="text" class="form-control" name="{{phone}}"  id="phone">
                 </div>
 
                 <div class="col-lg-6  my-2">
                     <label for="password" class="form-label">Password <span style="color: red;">*</span> </label>
-                    <input type="password" class="form-control" name="password" required id="password">
+                    <input type="password" class="form-control" name="password" value="{{password}}"  id="password">
                 </div>
 
 
                 <div class="col-lg-6  my-2">
                     <label for="confirm_pass" class="form-label">Confirm Password <span style="color: red;">*</span> </label>
-                    <input type="password" class="form-control" name="confirm_pass" required id="password">
+                    <input type="password" class="form-control" name="confirm_pass"   id="password">
                 </div>
 
 
@@ -96,6 +142,30 @@
         </form>            
     </div>
 </section>
+
+<script>
+    function get_value(value) {
+        var currentUrl = window.location.pathname;
+        var parms = new URLSearchParams(window.location.search);
+        parms.set('collage', value)
+        window.location.href = currentUrl + '?' + parms.toString();
+        console.log(currentUrl)
+        console.log(parms.toString())
+
+    }
+
+    function showTeacherImg(event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader;
+            reader.onload = (el) => {
+                var previewImg = document.getElementById('previewImg');
+                previewImg.src = el.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 
 <!-- add user section end -->
 

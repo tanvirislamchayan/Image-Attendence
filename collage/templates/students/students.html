@@ -17,32 +17,30 @@
             <i  id="left-bar" class="fa-solid fa-bars d-none"></i>
             <div id="left-inner-menu" class="position-sticky  border rounded shadow-sm bg-light p-2 inner-menu " style="left: 0; right: 0; top: 80px;">
                 <i id="left-xmark" class="fa-solid fa-xmark d-none"></i>
-                <form action="{% url 'add_dates' %}" method="post">
+                <form>
+                    {% include "base/messages.html" %}
+
                     {% csrf_token %}
                     <div class="col-lg-12 my-3 row mx-auto date-fun">
                         <div class="col-lg-6">
                             <label for="fromdate">From Date</label>
-                            <input class="form-control" type="date" name="fromdate" formtarget="dd-mm-yyyy" id="from-date">
+                            <input class="form-control" type="date" name="fromdate" onchange="getFormDate(this.value)" id="from-date" value="{{fromDate}}">
                         </div>
                         <div class="col-lg-6">
                             <label for="todate">To Date</label>
-                            <input class="form-control" type="date" name="todate" id="to-date">
-                        </div>
-                        <div class="col-lg-12 mt-4 text-end">
-                            <button type="submit"> Add Dates </button>
+                            <input class="form-control" type="date" name="todate" onchange="geToDate(this.value)" id="to-date" value="{{todate}}">
                         </div>
                     </div>
                 </form>
-
-                <div class="col-lg-12 mb-3 border rounded p-2 date-fun">
+                
+                <div class="col-lg-12 text-center row mx-auto mt-2 date-fun">
                     <h3>Available Dates</h3>
-                    <div class="date-field" data-date="2024-07-01">July 1, 2024</div>
-                    <div class="date-field" data-date="2024-07-02">July 2, 2024</div>
-                    <div class="date-field" data-date="2024-07-03">July 3, 2024</div>
-                    <div class="date-field" data-date="2024-07-03">July 3, 2024</div>
+                    {% for date in dates %}
+                    <div class="date-field col-lg-6 col-md-6 text-center col-sm-12 {% if selected_date == date %}selected{% endif %}" data-date="{{ date }}">{{ date }}</div>
+                    {% endfor %}
                 </div>
 
-                <form method="post" class="col-lg-12 row mx-auto">
+                <!-- <form method="post" class="col-lg-12 row mx-auto">
                     {% csrf_token %}
 
                     <div class="col-lg-12 mb-3">
@@ -100,7 +98,7 @@
                         <button type="submit">Filter</button>
                     </div>
 
-                </form>
+                </form> -->
             </div>
         </div>
 
@@ -129,53 +127,130 @@
 
             <!-- Students Table -->
 
-            <form action="#" method="post">
+            <form method="post">
 
                 {% csrf_token %}
-                <input type="text" value="{{selected_department}}" name="p_department">
-                <input type="text" value="{{selcted_semester}}" name="p_semester">
-                <input type="text" value="{{selected_probidhan}}" name="p_probidhan">
-                <input type="text" value="{{selected_shift}}" name="p_shift">
-
-                <textarea name="present_list" id="presentList"></textarea>
 
 
-
-
+                
 
                 <div class="col-lg-12n p-0 row my-4 mx-auto">
+
+                    {% if request.user.is_superuser %}
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                        <label class="mb-1" for="collage">Collage <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="collage" onchange="getCollage(this.value)" id="collage" {% if not request.user.is_superuser %} disabled {% endif %} required aria-label="Select Collage" >
+                            <option></option>
+                            {% for collage in collages %}
+                                <option value="{{ collage.slug }}" {% if selected_collage == collage.slug %} selected class="selected" {% endif %}>
+                                    {{ collage.code }} - {{ collage.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    {% else %}
+                    <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                        <label class="mb-1" for="collage">Collage </label>
+                        <div class="form-control" id="collage" value="{{teacher_collage.slug}}">
+                            {{ teacher_collage }}
+                        </div>
+                    </div>
+
+                    {% endif %}
+    
+                    <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                        <label class="mb-1" for="department">Department <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="department" id="department" onchange="getDepartment(this.value)" required aria-label="Select Department" >
+                            <option></option>
+                            {% for department in departments %}
+                                <option value="{{ department.slug }}" {% if selected_department == department.slug %} selected class="selected" {% endif %}>
+                                    {{ department.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+                        <label class="mb-1" for="probidhan">Probidhan <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="probidhan" id="probidhan" onchange="getProbidhan(this.value)" required aria-label="Select probidhan">
+                            <option></option>
+                            {% for probidhan in probidhans %}
+                                <option value="{{probidhan.name}}" {% if selected_probidhan == probidhan.name %} selected class="selected" {% endif %}>
+                                    {{probidhan.name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+    
+    
+                    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+                        <label class="mb-1" for="semester">Semester <span style="color:red;">*</span> </label>
+                        <select class="form-select" id="semester" name="semester" required aria-label="Select Semester" onchange="getSemester(this.value)">
+                            <option></option>
+                            {% for semester in semesters %}
+                                <option value="{{semester.name}}" {% if selected_semester == semester.name %} selected class="selected" {% endif %}>
+                                    {{semester.name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+    
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+                        <label class="mb-1" for="shift">Groups <span style="color:red;">*</span> </label>
+                        <select class="form-select" name="shift" onchange="getGroup(this.value)" id="group" required aria-label="Select Group">
+                            <option value="any" {% if not selected_shift %} selected {% endif %} >Any</option>
+                            {% for shift in shifts %}
+                            <option value="{{shift.shift}}" {% if selected_shift == shift.shift %} selected class="selected" {% endif %}>
+                                {{shift.shift}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+
+    
+    
+
                     <!-- <div class="col-lg-6"> -->
                         <div class="col-lg-4 mb-3">
                             <label for="date">Date <span style="color:red;">*</span> </label>
-                            <input type="date" name="date" id="date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
+                            <input type="date" name="present_date" id="date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
                         </div>
                     <!-- </div> -->
                     <!-- <div class="col-lg-6 row"> -->
 
-                        <div class="col-lg-4 mb-3">
+                        <!-- <div class="col-lg-4 mb-3">
                             <label class="mb-1" for="teacher">Teacher</label>
-                            <select class="form-select" name="p_teacher" aria-label="Teacher">
+                            <select class="form-select" name="p_teacher" disabled aria-label="Teacher">
                                 <option></option>
                                 {% for teacher in teachers %}
-                                <option value="{{ teacher.teacher.username }}" {% if selected_teacher == teacher.teacher.username %} selected class="selected" {% endif %}>
+                                <option value="{{ teacher.teacher.username }}"  {% if selected_teacher.teacher.username == teacher.teacher.username %} selected class="selected" {% endif %}>
                                     {{ teacher.teacher.first_name }} {{ teacher.teacher.last_name }}
                                 </option>
                                 {% endfor %}
                                 
                             </select>
-                        </div>
+                        </div> -->
 
 
                         <div class="col-lg-4 mb-3">
                             <label class="mb-1" for="subject">Subject <span style="color:red;">*</span> </label>
-                            <select class="form-select" name="p_subject" required aria-label="Select Subject" {% if not subjects %} disabled {% endif %}>
+                            <select class="form-select" name="present_subject" required aria-label="Select Subject" {% if not subjects %} disabled {% endif %}>
                                 <option></option>
                                 {% for subject in subjects %}
-                                <option value="{{ subject.name }}" {% if selected_subject == subject.name %} selected class="selected" {% endif %}>
+                                <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %} selected class="selected" {% endif %}>
                                     {{ subject.code }} - {{ subject.name }}
                                 </option>
                                 {% endfor %}
                             </select>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="mb-1" for="subject"> Teacher </label>
+                            <div class="form-control"> {{ selected_teacher }} </div>
                         </div>
                     <!-- </div> -->
                 </div>
@@ -202,7 +277,7 @@
         
                             <td>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{student.uid}}" id="{{student.uid}}" onchange="get_present(value)" name="present">
+                                    <input {% if  student in last_attends %} checked {% endif %} class="form-check-input" type="checkbox" value="{{student.uid}}" id="{{student.uid}}" onchange="get_present(value)" name="present">
                                 </div>
                             </td>
         
@@ -243,6 +318,15 @@
             </div>
         </form>            
      </section>
+
+     <div>
+        <!-- {{last_attends}}
+        {% for i in last_attends %}
+        {{i.uid}}
+        {% endfor %} -->
+
+
+     </div>
      <!-- End of Add Section -->
 
      <!-- <script>
@@ -255,22 +339,175 @@
      </script> -->
 
      <script>
-        const presentListValue = {}
-        const presentList = document.getElementById('presentList')
-
-
-        function get_present(value) {
-            const presentData = document.getElementById(value);
-            if (presentData.checked) {
-                presentListValue.append = presentData.value + ','
-                console.log(presentListValue)
-            }
-            
-
-            if (!presentData.checked) {
-                console.log('unchecked')
+        // collage
+        function getCollage(collage) {
+            if (collage) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('collage', collage);
+                window.location.href = currentUrl + '?' + params.toString();
             }
         }
+
+        // department
+        function getDepartment(department) {
+            if (department) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('department', department);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
+        }
+
+        // semester
+        function getSemester(semester) {
+            if (semester) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('semester', semester);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
+        }
+
+        // Peobidhan
+        function getProbidhan(probidhan) {
+            if (probidhan) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('probidhan', probidhan);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
+        }
+
+        // Shifts/Group
+        function getGroup(shift) {
+            if (shift) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('group', shift);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
+        }
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            var currentUrl = window.location.pathname;
+            var params = new URLSearchParams(window.location.search);
+            var teacherCollage = document.getElementById('teacher_collage');
+
+            
+            
+            // collage
+            if (params.has('collage')) {
+                collageValue = params.get('collage');
+                if (!collageValue) {
+                    var collage = document.getElementById('collage');
+                    getCollage(collage.getAttribute('value'));
+                }
+            } else {
+                var collage = document.getElementById('collage');
+                getCollage(collage.getAttribute('value'));
+            }
+
+            // department
+            if (params.has('department')) {
+                var departmentValue = params.get('department');
+                if (!departmentValue) {
+                    var department = document.getElementById('department');
+                    getDepartment(department.value);  
+                }
+            } else {
+                var department = document.getElementById('department');
+                getDepartment(department.value);  
+            }
+
+            // semester
+            if (params.has('semester')) {
+                var semesterValue = params.get('semester');
+                if (!semesterValue) {
+                    var semester = document.getElementById('semester');
+                    getSemester(semester.value);  
+                }
+            } else {
+                var semester = document.getElementById('semester');
+                getSemester(semester.value);  
+            }
+
+            // Probidhan
+            if (params.has('probidhan')) {
+                var probidhanValue = params.get('probidhan');
+                if (!probidhanValue) {
+                    var probidhan = document.getElementById('probidhan');
+                    getProbidhan(probidhan.value);  
+                }
+            } else {
+                var probidhan = document.getElementById('probidhan');
+                getProbidhan(probidhan.value);  
+            }
+
+            // shift/group
+            if (params.has('group')) {
+                var shiftValue = params.get('group')
+                if (!shiftValue) {
+                    var shift = document.getElementById('group')
+                    getGroup(shift.value)
+                } 
+            } else {
+                var shift = document.getElementById('group')
+                getGroup(shift.value)
+            }
+
+            
+        });
+
+
+        function getFormDate(value){
+            if (value) {
+                console.log(value)
+                var currentUrl = window.location.pathname;
+                var parms = new URLSearchParams(window.location.search);
+                parms.set('fromDate', value);
+                window.location.href = currentUrl + '?' + parms.toString();
+            }
+        }
+
+        function geToDate(value) {
+            if (value) {
+                var currentUrl = window.location.pathname;
+                var parms = new URLSearchParams(window.location.search);
+                parms.set('toDate', value);
+                window.location.href = currentUrl + '?' + parms.toString();
+            }
+        }
+
+        // const presentListValue = {}
+        // const presentList = document.getElementById('presentList')
+
+
+        // function get_present(value) {
+        //     const presentData = document.getElementById(value);
+        //     if (presentData.checked) {
+        //         presentListValue.append = presentData.value + ','
+        //         console.log(presentListValue)
+        //     }
+            
+
+        //     if (!presentData.checked) {
+        //         console.log('unchecked')
+        //     }
+        // }
      </script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script>
+        $(document).ready(function() {
+            $('.date-field').click(function() {
+                // Remove 'selected' class from all date-fields
+                $('.date-field').removeClass('selected');
+    
+                // Add 'selected' class to the clicked date-field
+                $(this).addClass('selected');
+            });
+        });
+    </script>
 
 {% endblock %}
