@@ -24,21 +24,29 @@
                     <div class="col-lg-12 my-3 row mx-auto date-fun">
                         <div class="col-lg-6">
                             <label for="fromdate">From Date</label>
-                            <input class="form-control" type="date" name="fromdate" onchange="getFormDate(this.value)" id="from-date" value="{{fromDate}}">
+                            <input class="form-control" type="date" name="fromdate" onchange="getFormDate(this.value)" id="from-date" value="{{start_date}}">
                         </div>
                         <div class="col-lg-6">
                             <label for="todate">To Date</label>
-                            <input class="form-control" type="date" name="todate" onchange="geToDate(this.value)" id="to-date" value="{{todate}}">
+                            <input class="form-control" type="date" name="todate" onchange="geToDate(this.value)" id="to-date" value="{{end_date}}">
                         </div>
                     </div>
                 </form>
                 
                 <div class="col-lg-12 text-center row mx-auto mt-2 date-fun">
-                    <h3>Available Dates</h3>
+                    <h5>Available Dates</h5>
                     {% for date in dates %}
-                    <div class="date-field col-lg-6 col-md-6 text-center col-sm-12 {% if selected_date == date %}selected{% endif %}" data-date="{{ date }}">{{ date }}</div>
+                    
+                    <div class="date-field col-md-6 text-center col-sm-12 {% if date == selected_date %} selected {% endif %}"
+                        data-date="{{ date }}" onclick="getSelectedDate(this.getAttribute('data-date'))">
+                        {{ date }}
+                    </div>
                     {% endfor %}
                 </div>
+                
+                
+
+                
 
                 <!-- <form method="post" class="col-lg-12 row mx-auto">
                     {% csrf_token %}
@@ -106,13 +114,13 @@
             <!-- Search bar -->
             <div class="col-lg-12n p-0 row my-4 mx-auto">
                 <div class="col-lg-6 my-2">
-                    {% if request.user.is_authenticated %}
+                    <!-- {% if request.user.is_authenticated %}
                     <a href="#">
                         <button id="add-btn">Add Student</button>
                     </a>
-                    {% endif %}
+                    {% endif %} -->
                 </div>
-                <div class="col-lg-6 my-2">
+                <div class="col-md-6 mr-auto float-right my-2">
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" name="search" placeholder="Search for Students" aria-label="Search">
                         <button type="submit" class="search-btn">
@@ -121,6 +129,7 @@
                         </button>
                     </form>
                 </div>
+                
             </div>
 
             
@@ -143,7 +152,7 @@
                         <select class="form-select" name="collage" onchange="getCollage(this.value)" id="collage" {% if not request.user.is_superuser %} disabled {% endif %} required aria-label="Select Collage" >
                             <option></option>
                             {% for collage in collages %}
-                                <option value="{{ collage.slug }}" {% if selected_collage == collage.slug %} selected class="selected" {% endif %}>
+                                <option value="{{ collage.slug }}" {% if selected_collage == collage %} selected class="selected" {% endif %}>
                                     {{ collage.code }} - {{ collage.name }}
                                 </option>
                             {% endfor %}
@@ -165,7 +174,7 @@
                         <select class="form-select" name="department" id="department" onchange="getDepartment(this.value)" required aria-label="Select Department" >
                             <option></option>
                             {% for department in departments %}
-                                <option value="{{ department.slug }}" {% if selected_department == department.slug %} selected class="selected" {% endif %}>
+                                <option value="{{ department.slug }}" {% if selected_department == department %} selected class="selected" {% endif %}>
                                     {{ department.name }}
                                 </option>
                             {% endfor %}
@@ -177,7 +186,7 @@
                         <select class="form-select" name="probidhan" id="probidhan" onchange="getProbidhan(this.value)" required aria-label="Select probidhan">
                             <option></option>
                             {% for probidhan in probidhans %}
-                                <option value="{{probidhan.name}}" {% if selected_probidhan == probidhan.name %} selected class="selected" {% endif %}>
+                                <option value="{{probidhan.name}}" {% if selected_probidhan == probidhan %} selected class="selected" {% endif %}>
                                     {{probidhan.name}}
                                 </option>
                             {% endfor %}
@@ -190,7 +199,7 @@
                         <select class="form-select" id="semester" name="semester" required aria-label="Select Semester" onchange="getSemester(this.value)">
                             <option></option>
                             {% for semester in semesters %}
-                                <option value="{{semester.name}}" {% if selected_semester == semester.name %} selected class="selected" {% endif %}>
+                                <option value="{{semester.name}}" {% if selected_semester == semester %} selected class="selected" {% endif %}>
                                     {{semester.name}}
                                 </option>
                             {% endfor %}
@@ -201,9 +210,9 @@
                     <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
                         <label class="mb-1" for="shift">Groups <span style="color:red;">*</span> </label>
                         <select class="form-select" name="shift" onchange="getGroup(this.value)" id="group" required aria-label="Select Group">
-                            <option value="any" {% if not selected_shift %} selected {% endif %} >Any</option>
+                            <option value="any" {% if not selected_group %} selected {% endif %} >Any</option>
                             {% for shift in shifts %}
-                            <option value="{{shift.shift}}" {% if selected_shift == shift.shift %} selected class="selected" {% endif %}>
+                            <option value="{{shift.shift}}" {% if selected_group == shift %} selected class="selected" {% endif %}>
                                 {{shift.shift}}
                             </option>
                             {% endfor %}
@@ -216,8 +225,8 @@
 
                     <!-- <div class="col-lg-6"> -->
                         <div class="col-lg-4 mb-3">
-                            <label for="date">Date <span style="color:red;">*</span> </label>
-                            <input type="date" name="present_date" id="date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
+                            <label for="present_date">Date <span style="color:red;">*</span> </label>
+                            <input type="date" name="present_date" id="present_date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
                         </div>
                     <!-- </div> -->
                     <!-- <div class="col-lg-6 row"> -->
@@ -306,18 +315,20 @@
 
 
     <!-- Add section -->
-     <section id="add-section" class="border rounded shadow">
+    <section id="add-section" class="border rounded shadow">
         <h2 class="text-center my-2">Add Students Excel Sheet</h2>
-        <form class="py-3" action="#">
+        <form class="py-3" action="{% url 'add_student' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="col-lg-6 my-1 mx-auto">
-                <input type="file">
+                <input type="file" name="student_excel" accept=".xls,.xlsx">
             </div>
             <div class="col-lg-6 my-1 mx-auto text-end">
                 <div id="cancel-btn" class="btn btn-danger">Cancel</div>
                 <button class="btn btn-primary" type="submit">Add</button>
             </div>
         </form>            
-     </section>
+    </section>
+    
 
      <div>
         <!-- {{last_attends}}
@@ -339,6 +350,13 @@
      </script> -->
 
      <script>
+
+        // selectedDate
+        function getSelectedDate(date) {
+            var presentDate = document.getElementById('present_date')
+            presentDate.value = date
+        }
+
         // collage
         function getCollage(collage) {
             if (collage) {
@@ -479,6 +497,8 @@
                 window.location.href = currentUrl + '?' + parms.toString();
             }
         }
+
+        
 
         // const presentListValue = {}
         // const presentList = document.getElementById('presentList')

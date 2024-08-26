@@ -14,7 +14,7 @@ class GenDate(BaseModel):
     date = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f'{self.teacher} - {self.date}'
+        return f'{self.date}'
     
 
 class StudentShift(BaseModel):
@@ -28,10 +28,10 @@ class StudentShift(BaseModel):
 class Student(BaseModel):
     collage = models.ForeignKey(Collage, on_delete=models.CASCADE, null=True, blank=True, related_name='student_of_collage')
     name = models.CharField(max_length=100)
-    sr_no = models.IntegerField()
-    roll = models.IntegerField()
-    registration = models.IntegerField()
-    seasson = models.CharField(max_length=20)
+    sr_no = models.IntegerField(null=True, blank=True)
+    roll = models.IntegerField(null=True, blank=True)
+    registration = models.CharField(max_length=20, null=True, blank=True)
+    seasson = models.CharField(max_length=20, null=True, blank=True)
     semester = models.ForeignKey(Semester, related_name='student_semester', on_delete=models.SET_NULL, null=True, blank=True)
     department = models.ForeignKey(Departments, related_name='student_department', on_delete=models.SET_NULL, null=True, blank=True)
     probidhan = models.ForeignKey(Probidhan, related_name='student_probidhan', on_delete=models.SET_NULL, null=True, blank=True)

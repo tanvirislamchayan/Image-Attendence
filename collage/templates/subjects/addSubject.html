@@ -1,0 +1,99 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block start %}
+
+<style>
+    a{
+        color: blue;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<main class="container h-100" id="upload_subject_excel">
+    <div class="card "  style="margin-top: 5rem;">
+        <h3 class="card-header">Add Subjects by uploading Excel Sheet</h3>
+        <div class="card-body row">
+            <form class="py-3" method="post" enctype="multipart/form-data">
+                <div class="col-md-6 mx-auto row">
+                    {% csrf_token %}
+                    <div class="col-lg-6 my-1 mx-auto">
+                        <input type="file" class="form-control" name="subject_excel" accept=".xlsx">
+                    </div>
+                    <div class="col-lg-6 my-1 mx-auto text-end">
+                        <a href="#" class="btn btn-danger">Cancel</a>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+                </div>
+            </form>  
+        </div>
+    </div>
+
+    <h4 class="col-md-12 bg-primary p-2 mt-5">Instruction to upload Excel sheet</h4>
+    <div class="instructions mt-3">
+        <p>Please ensure your Excel sheet follows the structure and formatting rules outlined below:</p>
+    
+        <h5>Column Structure:</h5>
+        <ol>
+            <li><strong>Department</strong> - The department or field of study. <br><em>Example:</em> Computer Science</li>
+            <li><strong>Semester</strong> - The semester the subjects are associated with. <br><em>Example:</em> 6th</li>
+            <li><strong>Probidhan</strong> - The specific regulation or syllabus year. <br><em>Example:</em> 2022</li>
+            <li><strong>Name</strong> - The name of the subject. <br><em>Example:</em> Surveillance Security System</li>
+            <li><strong>Code</strong> - The unique code assigned to the subject. <br><em>Example:</em> 28565</li>
+            <li><strong>Theory</strong> - Theoretical credit hours. <br><em>Example:</em> 1</li>
+            <li><strong>Practical</strong> - Practical credit hours. <br><em>Example:</em> 3</li>
+            <li><strong>Credit</strong> - Total credit hours for the subject. <br><em>Example:</em> 2</li>
+        </ol>
+    
+        <h5>Example Table Layout:</h5>
+
+        <div class="col-md-12" style="overflow-x: auto;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Probidhan</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Theory</th>
+                        <th>Practical</th>
+                        <th>Credit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Computer</td>
+                        <td>6th</td>
+                        <td>2022</td>
+                        <td>Surveillance Security System</td>
+                        <td>28565</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12 mb-4 text-danger demo">
+            <i class="fa-solid fa-circle"></i> Or <a href="{% url 'add_subject_demo' %}">Download Demo Excel Sheet</a> and Edit
+        </div>
+
+        <h5>File Format:</h5>
+        <p>The Excel file must be saved with a <strong>.xlsx</strong> extension. Ensure there are no empty rows or columns between the data.</p>
+    
+        <h5>Uploading the File:</h5>
+        <ol>
+            <li>Create the Excel sheet following the structure above.</li>
+            <li>Save the file on your device.</li>
+            <li>Go to the <a href="#upload_subject_excel">Add Subjects by uploading Excel Sheet</a> page.</li>
+            <li>Click on the "Choose File" button and select your Excel file.</li>
+            <li>Click the "Add" button to upload and process the file.</li>
+        </ol>
+    </div>
+    
+</main>
+
+{% endblock %}

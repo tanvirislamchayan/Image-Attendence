@@ -18,13 +18,7 @@
             <div id="left-inner-menu" class="position-sticky  border rounded shadow-sm bg-light p-2 inner-menu " style="left: 0; right: 0; top: 80px;">
                 <i id="left-xmark" class="fa-solid fa-xmark d-none"></i>
 
-                {% if request.user.is_authenticated %}
-                <div class="col-lg-12 my-3">
-                    <a href="#">
-                        <button id="add-btn">Add Subjects</button>
-                    </a>
-                </div>
-                {% endif %}
+                
 
                 <form method="post" class="col-lg-12 row mx-auto">
                   {% csrf_token %}
@@ -82,11 +76,11 @@
         <div class="col-lg-9 bg-light border rounded shadow-sm pt-3">
           {% if subjects %}
 
-            <h1 class="text-center"> {{ selected_department }} - {{ selected_semester }} ({{ selected_probidhan }}) </h1>
+            <h3 class="text-center"> {{ selected_department }} - {{ selected_semester }} ({{ selected_probidhan }}) </h3>
           
           {% else %}
 
-            <h1 class="text-center"> Filter for Subjects </h1>
+            <h3 class="text-center"> Filter for Subjects </h3>
             
 
           {% endif %}
@@ -163,20 +157,7 @@
 
 
 
-    <!-- Add section -->
-     <section id="add-section" class="border rounded shadow">
-        <h2 class="text-center my-2">Add Students Excel Sheet</h2>
-        <form class="py-3" action="#">
-            <div class="col-lg-6 my-1 mx-auto">
-                <input type="file">
-            </div>
-            <div class="col-lg-6 my-1 mx-auto text-end">
-                <button id="cancel-btn" class="btn btn-danger"> Cancel</button>
-                <button class="btn btn-primary" type="submit">Add</button>
-            </div>
-        </form>            
-     </section>
-     <!-- End of Add Section -->
+   
 
 
 
