@@ -36,9 +36,8 @@
                 <div class="col-lg-12 text-center row mx-auto mt-2 date-fun">
                     <h5>Available Dates</h5>
                     {% for date in dates %}
-                    
-                    <div class="date-field col-md-6 text-center col-sm-12 {% if date == selected_date %} selected {% endif %}"
-                        data-date="{{ date }}" onclick="getSelectedDate(this.getAttribute('data-date'))">
+                    <div class="date-field col-md-6 text-center col-sm-12 {% if date == selected_date_obj %} selected {% endif %}"
+                        data-date="{{ date }}" onclick="getSelectedDate(this)">
                         {{ date }}
                     </div>
                     {% endfor %}
@@ -225,8 +224,8 @@
 
                     <!-- <div class="col-lg-6"> -->
                         <div class="col-lg-4 mb-3">
-                            <label for="present_date">Date <span style="color:red;">*</span> </label>
-                            <input type="date" name="present_date" id="present_date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %}>
+                            <label for="present_date">Date <span style="color:red;">*</span></label>
+                            <input type="date" name="present_date" id="present_date" class="form-control" required placeholder="Enter date" {% if selected_date %} value="{{selected_date}}" {% endif %} onchange="getPresentDate(this.value)">
                         </div>
                     <!-- </div> -->
                     <!-- <div class="col-lg-6 row"> -->
@@ -247,10 +246,10 @@
 
                         <div class="col-lg-4 mb-3">
                             <label class="mb-1" for="subject">Subject <span style="color:red;">*</span> </label>
-                            <select class="form-select" name="present_subject" required aria-label="Select Subject" {% if not subjects %} disabled {% endif %}>
+                            <select id="subject" class="form-select" name="present_subject" required aria-label="Select Subject" {% if not subjects %} disabled {% endif %} onchange="getSubject(this.value)">
                                 <option></option>
                                 {% for subject in subjects %}
-                                <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %} selected class="selected" {% endif %}>
+                                <option value="{{ subject.slug }}" {% if selected_subject == subject %} selected class="selected" {% endif %}>
                                     {{ subject.code }} - {{ subject.name }}
                                 </option>
                                 {% endfor %}
@@ -280,32 +279,41 @@
                         <tbody>
 
 
-                        {% for student in students %}
-                        <tr>
-                            <th scope="row"> {{ student.sr_no }} </th>
-        
-                            <td>
-                                <div class="form-check">
-                                    <input {% if  student in last_attends %} checked {% endif %} class="form-check-input" type="checkbox" value="{{student.uid}}" id="{{student.uid}}" onchange="get_present(value)" name="present">
-                                </div>
-                            </td>
-        
-                            <td> {{ student.roll }} </td>
-                            <td class="student_name"> {{ student.name }} </td>
-                            <td>  </td>
-                        </tr>
-                        {% endfor %}
+                            {% for student in students %}
+                            <tr>
+                                <th scope="row">{{ student.sr_no }}</th>
+                                <td>
+                                    <div class="form-check">
+                                        <input 
+                                            {% if student in last_attends %} checked {% endif %}
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            value="{{ student.uid }}"
+                                            id="{{ student.uid }}"
+                                            name="present"
+                                            {% if attendence %} disabled {% endif %}> <!-- Disable checkbox if attendance exists -->
+                                    </div>
+                                </td>
+                                <td>{{ student.roll }}</td>
+                                <td class="student_name">{{ student.name }}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+
         
                         </tbody>
 
                     </table>
                 </div>
-
+                
+                {% if not attendence %}
                 <div class="col-lg-12 text-center my-5 p-2">
                     <button  type="submit">Present</button>
                     <!-- <button type="button" class="btn btn-outline-success">Present</button> -->
                 </div>
+                {% endif %}
             </form>
+
 
         </div>
     </section>
@@ -351,10 +359,43 @@
 
      <script>
 
-        // selectedDate
-        function getSelectedDate(date) {
-            var presentDate = document.getElementById('present_date')
-            presentDate.value = date
+        // function getPresentDate(date) {
+        //     console.log(date);
+        // }
+
+        // subject
+        function getSubject(subject) {
+            if (subject) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('subject', subject);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
+        }
+
+            // selectedDate
+        function getSelectedDate(element) {
+            var date = element.getAttribute('data-date');
+            var presentDate = document.getElementById('present_date');
+            presentDate.value = date;
+
+            // Highlight the selected date
+            // var dateFields = document.getElementsByClassName('date-field');
+            // for (var i = 0; i < dateFields.length; i++) {
+            //     dateFields[i].classList.remove('selected');
+            // }
+            // element.classList.add('selected');
+
+            getPresentDate(date);
+        }
+        
+        function getPresentDate(date) {
+            if (date) {
+                var currentUrl = window.location.pathname;
+                var params = new URLSearchParams(window.location.search);
+                params.set('presentDate', date);
+                window.location.href = currentUrl + '?' + params.toString();
+            }
         }
 
         // collage
@@ -405,7 +446,10 @@
                 params.set('group', shift);
                 window.location.href = currentUrl + '?' + params.toString();
             }
+
         }
+
+        
         
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -461,6 +505,30 @@
             } else {
                 var probidhan = document.getElementById('probidhan');
                 getProbidhan(probidhan.value);  
+            }
+
+            // subject
+            if (params.has('subject')) {
+                var subjectValue = params.get('subject');
+                if (!subjectValue) {
+                    var subject = document.getElementById('subject');
+                    getProbidhan(subject.value);  
+                }
+            } else {
+                var subject = document.getElementById('subject');
+                getSubject(subject.value);  
+            }
+
+            // presentDate
+            if (params.has('presentDate')) {
+                var presentDateValue = params.get('presentDate');
+                if (!presentDateValue) {
+                    var present_date = document.getElementById('present_date');
+                    getProbidhan(present_date.value);  
+                }
+            } else {
+                var present_date = document.getElementById('present_date');
+                getPresentDate(present_date.value);  
             }
 
             // shift/group

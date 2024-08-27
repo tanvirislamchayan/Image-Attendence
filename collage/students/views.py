@@ -119,8 +119,12 @@ def show_students(request):
     selected_semester = ''
     selected_group = ''
     subjects_objs = ''
+    selected_subject = ''
+    presentDate = ''
     student_objs = ''
     group = ''
+
+
     if 'fromDate' in request.GET:
         start_date = request.GET.get('fromDate')
         context['start_date'] = start_date
@@ -143,7 +147,7 @@ def show_students(request):
     # Probidhan
     if 'probidhan' in request.GET:
         probidhan = request.GET.get('probidhan')
-        selected_probidhan = Probidhan.objects.get(name=probidhan)
+        selected_probidhan = Probidhan.objects.filter(name=probidhan).first()
         context['selected_probidhan']=selected_probidhan
     # semester
     if 'semester' in request.GET:
@@ -156,12 +160,27 @@ def show_students(request):
         if group != 'any':
             selected_group = StudentShift.objects.get(shift=group)
         context['selected_group']=selected_group
-    print(group)
+
+    # presentDate
+    if 'presentDate' in request.GET:
+        presentDate = request.GET.get('presentDate')
+        selected_date_obj = GenDate.objects.filter(date=presentDate,teacher=teacher_obj).first()
+        context['selected_date'] =  presentDate
+        context['selected_date_obj'] = selected_date_obj
+    # selectec_subject
+    if 'subject' in request.GET and selected_probidhan and selected_semester:
+        subject = request.GET.get('subject')
+        selected_subject = Subjects.objects.filter(slug=subject,department=selected_department, probidhan=selected_probidhan, semester=selected_semester).first()
+        context['selected_subject'] = selected_subject
+    print(f'sel sub {selected_subject}')
+
+
 
     # subjects
     if selected_department and selected_probidhan and selected_semester:
         subjects_objs = Subjects.objects.filter(department=selected_department, probidhan=selected_probidhan, semester=selected_semester)
         context['subjects']=subjects_objs
+
    
     if group == 'any' and selected_collage and selected_department and selected_semester and selected_probidhan:
         student_objs = Student.objects.filter(
@@ -183,15 +202,64 @@ def show_students(request):
         'students':student_objs
     })
 
+
+    attendence_obj = None
     
-    # POST
+    if selected_collage and selected_department and selected_probidhan and selected_subject and selected_semester and presentDate and teacher_obj:
+        if not selected_group:
+            attendence_obj = Attendence.objects.filter(
+                collage=selected_collage,
+                department=selected_department,
+                probidhan=selected_probidhan,
+                semester=selected_semester,
+                # group=selected_group if selected_group else False,
+                date=presentDate,
+                subject=selected_subject,
+            ).first()  # Use .first() to get a single object or None
+
+        if selected_group:
+            attendence_obj = Attendence.objects.filter(
+                collage=selected_collage,
+                department=selected_department,
+                probidhan=selected_probidhan,
+                semester=selected_semester,
+                date=presentDate,
+                subject=selected_subject,
+            ).first()
+
+        if attendence_obj:
+            messages.success(request, "Done. You can't update!")
+            last_attends = list(attendence_obj.present_students.all())
+            context.update({
+                'attendence': attendence_obj,
+                'last_attends': last_attends,
+                # Add other context variables as needed
+            })
+
+       
+            
+
     if request.method == 'POST':
-        present_subject = request.POST.get('present_subject')
-        present_date = request.POST.get('present_date')
         present_students = request.POST.getlist('present')
+        if not attendence_obj:
+            attendence_obj = Attendence.objects.create(
+                collage=selected_collage,
+                department=selected_department,
+                probidhan=selected_probidhan,
+                semester=selected_semester,
+                group=selected_group if selected_group else False,
+                date=presentDate,
+                subject=selected_subject,
+                teacher=teacher_obj
+            )
+
+        # Add present students to the many-to-many field
+        attendence_obj.present_students.add(*present_students)
+        
+        # messages.success(request, "Attendance recorded successfully!")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', request.path_info))
 
 
-    
 
 
 
